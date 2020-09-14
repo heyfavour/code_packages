@@ -14,19 +14,7 @@
 
 class Solution(object):
     # 初始版本 其实是递归 所有都遍历了一遍 只不过加加上了剪纸
-    def combinationSum1(self, candidates, target):
-        result = []
 
-        def back(tmp):
-            if sum(tmp) == target:
-                result.append(tmp)
-
-            for candidate in candidates:
-                if sum(tmp) + candidate > target: break
-                back(tmp + [candidate, ])
-
-        back([])
-        return result
 
     # 因为从小到大无限重复  所有小的已经把大的都遍历了，可以再次剪枝
     # 类似223  322 新增 新增tmp_i 每次只从>=tmp_i的地方开始遍历
