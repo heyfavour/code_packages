@@ -62,6 +62,7 @@ class MySort():
 
     @timecal
     def heap_sort(self, sort_list):
+        #堆排序
         n = len(sort_list)
 
         def max_heap(sort_list, n, i):
