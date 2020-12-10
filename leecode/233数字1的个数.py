@@ -1,24 +1,18 @@
 class Solution:
     @classmethod
-    def countDigitOne(self, n: int,x:int) -> int:
-        str_n = str(n)
-        len_str = len(str_n)
-        dp = [0]*len_str
-        for i in range(len_str):
-            if i == 0:
-                dp[0] = 1
-            else:
-                dp[i] = 10 ** (i) + 10 * dp[i - 1]
+    def countDigitOne(self, n: int, x: int) -> int:
         count = 0
-        for i in range(len_str-1,-1,-1):
-            print(str_n[i])
-            if i > x:count = count + dp[i-1]*(int(str_n[i])-1)+10**(i)
-            if i == x:count = count + dp[i-1]*(int(str_n[i])-1) + 
-            # if i < x:count = count + dp[i-1] + 1
+        num = n
+        base = 1
+        while base < n:
+            pre, k, after = num // 10, num % 10, n % base
+            if k > x: count = count + (pre + 1) * base
+            if k < x: count = count + pre * base
+            if k == x: count = count + pre * base + after + 1
+            num = num // 10
+            base = base * 10
         return count
 
 
-
-
 if __name__ == '__main__':
-    print(Solution.countDigitOne(899,1))
+    print(Solution.countDigitOne(2593, 1))
