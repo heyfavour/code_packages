@@ -1,0 +1,1006 @@
+  ____________       _____________
+ ____    |__( )_________  __/__  /________      __
+____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+ _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
+[[34m2021-02-18 18:14:45,217[0m] {[34mscheduler_job.py:[0m1247} INFO[0m - Starting the scheduler[0m
+[[34m2021-02-18 18:14:45,217[0m] {[34mscheduler_job.py:[0m1252} INFO[0m - Processing each file at most -1 times[0m
+[[34m2021-02-18 18:14:45,370[0m] {[34mdag_processing.py:[0m250} INFO[0m - Launched DagFileProcessorManager with pid: 3482111[0m
+[[34m2021-02-18 18:14:45,385[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 18:14:45,493[0m] {[34msettings.py:[0m54} INFO[0m - Configured default timezone Timezone('Asia/Shanghai')[0m
+[[34m2021-02-18 18:17:25,749[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:17:25,866[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:17:25,868[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:17:25,868[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:17:25,868[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:17:25,869[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 1, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:17:25,869[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:17:25,873[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:17:26,067[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-01T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:17:27,665[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:17:27,666[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:17:27,666[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:17:27,666[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:17:27,667[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 1, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:17:27,667[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:17:27,677[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:17:27,679[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-01 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:17:27,833[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                [[34m2021-02-18 18:18:26,162[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:26,163[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:18:26,163[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:18:26,163[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:26,164[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 1, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:18:26,164[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-01T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:18:26,226[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:26,234[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-01 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:18:26,362[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-01T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:18:27,337[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:27,338[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:18:27,338[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:18:27,338[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-01 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:27,339[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 1, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:18:27,339[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:27,351[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-01T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:27,353[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-01 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:18:27,496[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:18:28,464[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-01 22:10:00+00:00: scheduled__2021-02-01T22:10:00+00:00, externally triggered: False> successful[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-01T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:18:29,047[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:18:29,244[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:29,245[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:18:29,245[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:18:29,246[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:29,247[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 2, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:18:29,247[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:29,255[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:29,257[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-01 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:18:29,422[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-02T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:18:30,512[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:30,513[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:18:30,513[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:18:30,513[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:18:30,515[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 2, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:18:30,515[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:30,520[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:18:30,522[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-02 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:18:30,719[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-02T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:19:18,563[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:18,564[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:19:18,565[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:19:18,565[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:18,566[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 2, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:19:18,566[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:18,600[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:18,602[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-02 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:19:18,796[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-02T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:19:19,739[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:19,741[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:19:19,741[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:19:19,741[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-02 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:19,742[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 2, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:19:19,742[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:19,746[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-02 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:19:19,750[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-02T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:19,982[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:19:20,827[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-02 22:10:00+00:00: scheduled__2021-02-02T22:10:00+00:00, externally triggered: False> successful[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-02T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:19:21,247[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:19:21,347[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:21,348[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:19:21,348[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:19:21,348[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:21,349[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 3, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:19:21,350[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:21,365[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-02 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:19:21,374[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:21,491[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-03T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:19:22,663[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:22,664[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:19:22,664[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:19:22,664[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:19:22,666[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 3, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:19:22,666[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:22,700[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-03 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:19:22,702[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:19:22,849[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[[34m2021-02-18 18:19:45,485[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 18:19:45,490[0m] {[34mscheduler_job.py:[0m1856} INFO[0m - Marked 3 SchedulerJob instances as failed[0m
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-03T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:07,069[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:07,070[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:07,070[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:07,070[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:07,071[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 3, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:20:07,071[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:07,080[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:07,083[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-03 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:07,160[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-03T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:08,933[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:08,934[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:08,935[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:08,935[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-03 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:08,936[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 3, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:20:08,936[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:08,969[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-03T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:08,979[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-03 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:09,087[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-03T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:10,092[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-03 22:10:00+00:00: scheduled__2021-02-03T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:20:10,118[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-03 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:11,141[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:20:11,260[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:11,261[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:11,261[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:11,261[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:11,263[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 4, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:20:11,263[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:11,274[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:11,343[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-04T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:12,485[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:12,486[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:12,486[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:12,486[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:12,488[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 4, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:20:12,488[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:12,494[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:12,496[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-04 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:12,626[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-04T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:56,568[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:56,569[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:56,569[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:56,569[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:56,571[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 4, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:20:56,571[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:56,604[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:56,606[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-04 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:56,763[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-04T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:57,782[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:57,783[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:57,784[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:57,784[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-04 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:57,785[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 4, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:20:57,785[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:57,798[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-04T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:57,800[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-04 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:57,872[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-04T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:20:58,891[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-04 22:10:00+00:00: scheduled__2021-02-04T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:20:58,934[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-04 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:20:59,411[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:20:59,560[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:59,561[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:20:59,561[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:20:59,561[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:20:59,562[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 5, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:20:59,563[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:59,588[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:20:59,713[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-05T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:21:00,907[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:00,908[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:21:00,909[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:21:00,909[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:00,910[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 5, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:21:00,910[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:00,926[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:00,969[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-05 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:21:01,103[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-05T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:21:44,129[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:44,131[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:21:44,131[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:21:44,131[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:44,132[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 5, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:21:44,132[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:44,156[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-05 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:21:44,163[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:44,285[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-05T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:21:45,286[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:45,290[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:21:45,290[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:21:45,290[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-05 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:45,291[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 5, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:21:45,291[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:45,329[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-05T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:45,379[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-05 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:21:45,474[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-05T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:21:46,907[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-05 22:10:00+00:00: scheduled__2021-02-05T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:21:46,949[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-05 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:21:47,745[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:21:47,888[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:47,889[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:21:47,889[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:21:47,889[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:47,890[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 6, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:21:47,890[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:47,929[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:48,057[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-06T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:21:49,131[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:49,132[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:21:49,133[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:21:49,133[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:21:49,134[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 6, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:21:49,134[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:49,140[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:21:49,142[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-06 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:21:49,264[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-06T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:22:32,122[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:32,123[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:22:32,123[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:22:32,123[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:32,125[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 6, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:22:32,125[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:32,132[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:32,134[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-06 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:22:32,202[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-06T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:22:33,327[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:33,329[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:22:33,329[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:22:33,329[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-06 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:33,330[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 6, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:22:33,330[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:33,364[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-06T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:33,366[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-06 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:22:33,557[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-06T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:22:35,540[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-06 22:10:00+00:00: scheduled__2021-02-06T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:22:35,550[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-06 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:22:36,580[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:22:36,734[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:36,735[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:22:36,735[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:22:36,735[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:36,736[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 7, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:22:36,736[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:36,769[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:36,973[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-07T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:22:38,430[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:38,431[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:22:38,431[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:22:38,431[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:22:38,432[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 7, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:22:38,432[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:38,444[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:22:38,474[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-07 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:22:38,658[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-07T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:23:22,018[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:22,019[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:23:22,019[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:23:22,019[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:22,033[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 7, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:23:22,033[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:22,038[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:22,062[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-07 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:23:22,173[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-07T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:23:23,209[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:23,210[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:23:23,210[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:23:23,211[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-07 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:23,212[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 7, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:23:23,212[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:23,243[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-07T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:23,246[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-07 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:23:23,445[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-07T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:23:24,609[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-07 22:10:00+00:00: scheduled__2021-02-07T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:23:24,637[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-07 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:23:25,666[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:23:25,794[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:25,795[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:23:25,795[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:23:25,795[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:25,796[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 8, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:23:25,796[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:25,812[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:25,994[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-08T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:23:27,080[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:27,081[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:23:27,081[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:23:27,081[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:23:27,083[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 8, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:23:27,083[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:27,108[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:23:27,158[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-08 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:23:27,215[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 0) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-08T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:24:11,283[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:11,284[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:24:11,284[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:24:11,284[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:11,285[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 8, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:24:11,286[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:11,319[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:11,327[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-08 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:24:11,436[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-08T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:24:12,458[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:12,459[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:24:12,459[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:24:12,459[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-08 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:12,461[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 8, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:24:12,461[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:12,464[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-08 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:24:12,468[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-08T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:12,564[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-08T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:24:13,539[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-08 22:10:00+00:00: scheduled__2021-02-08T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:24:13,571[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-08 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:24:14,594[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:24:14,697[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:14,698[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:24:14,698[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:24:14,698[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:14,700[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 9, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:24:14,700[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:14,704[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:14,805[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-09T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:24:16,453[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:16,454[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:24:16,454[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:24:16,454[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:16,455[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 9, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:24:16,455[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:16,459[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:16,462[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-09 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:24:16,588[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1][[34m2021-02-18 18:24:45,599[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-09T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:24:58,811[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:58,812[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:24:58,812[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:24:58,812[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:24:58,813[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 9, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:24:58,813[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:58,817[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:24:58,819[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-09 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:24:58,964[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:25:00,022[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:00,023[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:00,024[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:00,024[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-09 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:00,025[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 9, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:25:00,031[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:00,104[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-09T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-09T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:00,178[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-09 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:00,224[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-09T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:01,204[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-09 22:10:00+00:00: scheduled__2021-02-09T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:25:01,214[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-09 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:01,688[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:25:01,872[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:01,874[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:01,874[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:01,874[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:01,875[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 10, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:25:01,875[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:01,912[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:02,012[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-10T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:03,158[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:03,159[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:03,159[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:03,160[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:03,161[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 10, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:25:03,161[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:03,186[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:03,215[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-10 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:03,369[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-10T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:46,228[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:46,229[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:46,229[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:46,229[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:46,230[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 10, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:25:46,231[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:46,234[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:46,236[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-10 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:46,385[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-10T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:47,344[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:47,345[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:47,345[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:47,345[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-10 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:47,346[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 10, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:25:47,347[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:47,361[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-10T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:47,390[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-10 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:47,466[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-10T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:49,033[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-10 22:10:00+00:00: scheduled__2021-02-10T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:25:49,080[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-10 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:49,955[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:25:50,083[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:50,084[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:50,084[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:50,084[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:50,085[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 11, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:25:50,085[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:50,099[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:50,177[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-11T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:25:51,363[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:51,365[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:25:51,365[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:25:51,365[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:25:51,366[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 11, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:25:51,366[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:51,404[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-11 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:25:51,413[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:25:51,670[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-11T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:26:32,872[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:32,873[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:26:32,873[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:26:32,873[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:32,874[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 11, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:26:32,875[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:32,904[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:32,907[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-11 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:26:33,113[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-11T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:26:34,092[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:34,093[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:26:34,094[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:26:34,094[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-11 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:34,095[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 11, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:26:34,095[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:34,121[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-11 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:26:34,120[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-11T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:34,386[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-11T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:26:35,360[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-11 22:10:00+00:00: scheduled__2021-02-11T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:26:35,436[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-11 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:26:36,466[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:26:36,694[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:36,695[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:26:36,695[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:26:36,696[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:36,697[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 12, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:26:36,697[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:36,732[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:36,870[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-12T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:26:37,936[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:37,937[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:26:37,947[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:26:37,948[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:26:37,949[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 12, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:26:37,949[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:37,958[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-12 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:26:37,967[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:26:38,089[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-12T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:27:22,147[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:22,148[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:27:22,148[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:27:22,148[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:22,152[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 12, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:27:22,152[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:22,176[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:22,179[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-12 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:27:22,282[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-12T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:27:23,367[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:23,368[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:27:23,368[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:27:23,368[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-12 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:23,369[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 12, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:27:23,370[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:23,402[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-12 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:27:23,405[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-12T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:23,505[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-12T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:27:25,586[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-12 22:10:00+00:00: scheduled__2021-02-12T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:27:25,625[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-12 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:27:26,071[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:27:26,148[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:26,149[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:27:26,149[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:27:26,149[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:26,150[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 13, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:27:26,150[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:26,164[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:26,282[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-13T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:27:28,540[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:28,541[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:27:28,541[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:27:28,542[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:27:28,543[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 13, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:27:28,543[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:28,569[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-13 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:27:28,580[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:27:28,721[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-13T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:28:12,474[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:12,475[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:28:12,487[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:28:12,487[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:12,523[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 13, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:28:12,523[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:12,560[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:12,563[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-13 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:28:12,796[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-13T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:28:14,908[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:14,909[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:28:14,909[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:28:14,909[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-13 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:14,937[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 13, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:28:14,937[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:14,998[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-13T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:15,023[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-13 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:28:15,125[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:28:16,144[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-13 22:10:00+00:00: scheduled__2021-02-13T22:10:00+00:00, externally triggered: False> successful[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-13T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:28:16,162[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-13 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:28:17,203[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:28:17,328[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:17,329[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:28:17,329[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:28:17,329[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:17,330[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 14, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:28:17,330[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:17,334[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:17,452[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-14T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:28:18,902[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:18,904[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:28:18,904[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:28:18,904[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:28:18,976[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 14, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:28:18,976[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:18,986[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:28:18,988[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-14 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:28:19,118[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 0:===========================================================(1 + 0) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-14T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:02,230[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:02,241[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:02,241[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:02,242[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:02,245[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 14, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:29:02,245[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:02,256[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:02,259[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-14 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:02,369[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-14T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:03,593[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:03,594[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:03,594[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:03,594[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-14 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:03,595[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 14, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:29:03,606[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:03,629[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-14T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:03,632[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-14 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:03,691[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-14T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:05,146[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-14 22:10:00+00:00: scheduled__2021-02-14T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:29:05,187[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-14 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:06,220[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:29:06,390[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:06,402[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:06,402[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:06,402[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:06,415[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 15, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:29:06,415[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:06,482[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:06,735[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-15T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:07,780[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:07,781[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:07,781[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:07,782[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:07,783[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 15, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:29:07,783[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:07,798[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-15 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:07,806[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:07,917[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                [[34m2021-02-18 18:29:45,711[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-15T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:51,512[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:51,513[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:51,513[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:51,513[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:51,515[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 15, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:29:51,515[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:51,534[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:51,537[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-15 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:51,623[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-15T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:53,184[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:53,185[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:53,185[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:53,185[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-15 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:53,186[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 15, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:29:53,187[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:53,212[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-15T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:53,215[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-15 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:53,340[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-15T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:54,333[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-15 22:10:00+00:00: scheduled__2021-02-15T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:29:54,370[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-15 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:55,422[0m] {[34mscheduler_job.py:[0m1681} INFO[0m - DAG web_info is at (or above) max_active_runs (1 of 1), not creating any more runs[0m
+[[34m2021-02-18 18:29:55,574[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.generate_execution_date 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:55,575[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:55,575[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:55,575[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.generate_execution_date 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:55,577[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='generate_execution_date', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 4 and queue default[0m
+[[34m2021-02-18 18:29:55,577[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:55,588[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'generate_execution_date', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:55,668[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.generate_execution_date 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:29:56,844[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:56,845[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:29:56,845[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:29:56,846[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.log_into_backend_info_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:29:56,847[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='log_into_backend_info_task', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 3 and queue default[0m
+[[34m2021-02-18 18:29:56,847[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:56,883[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.generate_execution_date execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:29:56,886[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'log_into_backend_info_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:29:57,032[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                          (0 + 1) / 1][Stage 1:>                                                          (0 + 1) / 1]                                                                                Running <TaskInstance: web_info.log_into_backend_info_task 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:30:39,662[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:30:39,663[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:30:39,663[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:30:39,663[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.backend_info_analysis_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:30:39,664[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='backend_info_analysis_task', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 2 and queue default[0m
+[[34m2021-02-18 18:30:39,664[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:30:39,700[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'backend_info_analysis_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:30:39,706[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.log_into_backend_info_task execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:30:39,793[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/spark/jars/slf4j-log4j12-1.7.30.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.25.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Warning: Ignoring non-Spark config property: hive.exec.dynamic.partition.mode
+Warning: Ignoring non-Spark config property: hive.metastore.uris
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 0:>                                                         (0 + 1) / 16][Stage 0:>                                                         (0 + 2) / 16][Stage 0:===>                                                      (1 + 1) / 16][Stage 0:=======>                                                  (2 + 2) / 16][Stage 0:==============>                                           (4 + 1) / 16][Stage 0:==================>                                       (5 + 1) / 16][Stage 0:=========================>                                (7 + 1) / 16][Stage 0:=============================>                            (8 + 1) / 16][Stage 0:===================================>                     (10 + 1) / 16][Stage 0:=======================================>                 (11 + 1) / 16][Stage 0:==============================================>          (13 + 1) / 16][Stage 0:=================================================>       (14 + 1) / 16][Stage 0:=====================================================>   (15 + 1) / 16][Stage 1:==>                                                     (10 + 1) / 200][Stage 1:====>                                                   (16 + 1) / 200][Stage 1:=======>                                                (26 + 1) / 200][Stage 1:=========>                                              (33 + 1) / 200][Stage 1:===========>                                            (40 + 1) / 200][Stage 1:============>                                           (45 + 1) / 200][Stage 1:==============>                                         (51 + 1) / 200][Stage 1:================>                                       (60 + 1) / 200][Stage 1:===================>                                    (69 + 2) / 200][Stage 1:======================>                                 (79 + 1) / 200][Stage 1:=========================>                              (90 + 1) / 200][Stage 1:===========================>                            (99 + 2) / 200][Stage 1:==============================>                        (112 + 1) / 200][Stage 1:==================================>                    (127 + 1) / 200][Stage 1:======================================>                (140 + 2) / 200][Stage 1:==========================================>            (155 + 2) / 200][Stage 1:================================================>      (175 + 2) / 200][Stage 1:===================================================>   (188 + 1) / 200]                                                                                [Stage 4:==============================================>          (13 + 1) / 16][Stage 5:======>                                                 (24 + 1) / 200][Stage 5:==========>                                             (38 + 1) / 200][Stage 5:=============>                                          (48 + 1) / 200][Stage 5:================>                                       (58 + 1) / 200][Stage 5:=====================>                                  (78 + 1) / 200][Stage 5:=========================>                              (92 + 1) / 200][Stage 5:==================================>                    (127 + 1) / 200][Stage 5:=======================================>               (144 + 1) / 200][Stage 5:===========================================>           (159 + 1) / 200][Stage 5:================================================>      (177 + 1) / 200][Stage 5:=====================================================> (196 + 1) / 200]                                                                                [Stage 7:================>                                       (58 + 1) / 200][Stage 7:=====================>                                  (77 + 1) / 200][Stage 7:========================>                               (89 + 2) / 200][Stage 7:=============================>                         (107 + 6) / 200][Stage 7:====================================>                  (131 + 1) / 200][Stage 7:====================================>                  (134 + 2) / 200][Stage 7:=======================================>               (143 + 1) / 200][Stage 7:=============================================>         (166 + 1) / 200][Stage 7:==================================================>    (183 + 1) / 200]                                                                                [Stage 10:=============================================>          (13 + 1) / 16][Stage 11:==============>                                        (51 + 1) / 200][Stage 11:=====================>                                 (77 + 2) / 200][Stage 11:===========================>                          (100 + 1) / 200][Stage 11:===============================>                      (117 + 1) / 200][Stage 11:====================================>                 (136 + 1) / 200][Stage 11:==========================================>           (158 + 1) / 200][Stage 11:=================================================>    (185 + 5) / 200]                                                                                Running <TaskInstance: web_info.backend_info_analysis_task 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:31:33,386[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:31:33,387[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:31:33,387[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:31:33,387[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:31:33,388[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=1) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:31:33,388[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:31:33,401[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.backend_info_analysis_task execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:31:33,411[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:31:33,863[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:34:45,794[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:37:15,593[0m] {[34mdagrun.py:[0m430} ERROR[0m - Marking run <DagRun web_info @ 2021-02-16 22:10:00+00:00: scheduled__2021-02-16T22:10:00+00:00, externally triggered: False> failed[0m
+[[34m2021-02-18 18:37:15,634[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 1[0m
+[[34m2021-02-18 18:38:09,394[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:38:09,395[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:38:09,395[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:38:09,396[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:38:09,397[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=2) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:38:09,397[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:38:09,430[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:38:09,621[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+[[34m2021-02-18 18:39:45,877[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:40:23,869[0m] {[34mdagrun.py:[0m430} ERROR[0m - Marking run <DagRun web_info @ 2021-02-16 22:10:00+00:00: scheduled__2021-02-16T22:10:00+00:00, externally triggered: False> failed[0m
+[[34m2021-02-18 18:40:23,906[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 2[0m
+[[34m2021-02-18 18:43:24,188[0m] {[34mscheduler_job.py:[0m941} INFO[0m - 1 tasks up for execution:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:43:24,189[0m] {[34mscheduler_job.py:[0m970} INFO[0m - Figuring out tasks to run in Pool(name=default_pool) with 128 open slots and 1 task instances ready to be queued[0m
+[[34m2021-02-18 18:43:24,189[0m] {[34mscheduler_job.py:[0m998} INFO[0m - DAG web_info has 0/8 running and queued tasks[0m
+[[34m2021-02-18 18:43:24,189[0m] {[34mscheduler_job.py:[0m1063} INFO[0m - Setting the following tasks to queued state:
+	<TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16 22:10:00+00:00 [scheduled]>[0m
+[[34m2021-02-18 18:43:24,191[0m] {[34mscheduler_job.py:[0m1105} INFO[0m - Sending TaskInstanceKey(dag_id='web_info', task_id='update_ip_access_unnormal_address_task', execution_date=datetime.datetime(2021, 2, 16, 22, 10, tzinfo=Timezone('UTC')), try_number=3) to executor with priority 1 and queue default[0m
+[[34m2021-02-18 18:43:24,191[0m] {[34mbase_executor.py:[0m82} INFO[0m - Adding to queue: ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:43:24,260[0m] {[34mlocal_executor.py:[0m81} INFO[0m - QueuedLocalWorker running ['airflow', 'tasks', 'run', 'web_info', 'update_ip_access_unnormal_address_task', '2021-02-16T22:10:00+00:00', '--local', '--pool', 'default_pool', '--subdir', '/home/task/airflow/dags/web_info.py'][0m
+[[34m2021-02-18 18:43:24,360[0m] {[34mdagbag.py:[0m448} INFO[0m - Filling up the DagBag from /home/task/airflow/dags/web_info.py[0m
+Running <TaskInstance: web_info.update_ip_access_unnormal_address_task 2021-02-16T22:10:00+00:00 [queued]> on host tencent
+[[34m2021-02-18 18:43:58,805[0m] {[34mdagrun.py:[0m445} INFO[0m - Marking run <DagRun web_info @ 2021-02-16 22:10:00+00:00: scheduled__2021-02-16T22:10:00+00:00, externally triggered: False> successful[0m
+[[34m2021-02-18 18:43:58,845[0m] {[34mscheduler_job.py:[0m1199} INFO[0m - Executor reports execution of web_info.update_ip_access_unnormal_address_task execution_date=2021-02-16 22:10:00+00:00 exited with status success for try_number 3[0m
+[[34m2021-02-18 18:44:45,922[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 18:49:45,952[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 18:54:45,995[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 18:59:46,044[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:04:46,073[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:09:46,126[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:14:46,166[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:19:46,210[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:24:46,244[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:29:46,275[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
+[[34m2021-02-18 19:34:46,302[0m] {[34mscheduler_job.py:[0m1834} INFO[0m - Resetting orphaned tasks for active dag runs[0m
