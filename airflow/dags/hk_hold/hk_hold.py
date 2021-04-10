@@ -15,7 +15,10 @@ def hk_hold_into_db(runday):
     #check_date
     trade_date = session.query(SHARE_TRADE_DATE).filter_by(trade_date=int(runday)).first()
     if not trade_date:return "today no trade"
-    df = ak.stock_em_hsgt_stock_statistics(symbol="北向持股", start_date=str(runday), end_date=str(runday))
+    try:
+        df = ak.stock_em_hsgt_stock_statistics(symbol="北向持股", start_date=str(runday), end_date=str(runday))
+    except ValueError:
+        return "today no trade"
     columns = {
         '持股日期': 'date_id',
         '股票代码': 'code',
@@ -36,4 +39,7 @@ def hk_hold_into_db(runday):
     df.to_sql("hk_hold", engine, if_exists="append", index=False)
     #print(df)
     return "success"
+
+if __name__ == '__main__':
+    hk_hold_into_db('20210402')
 
