@@ -43,6 +43,7 @@ def run_epoch(dataloader, update=True, alpha=0.5):
         total_hit += torch.sum(torch.argmax(logits, dim=1) == hard_labels).item()
         total_num += len(inputs)
         total_loss += loss.item() * len(inputs)
+        print("one batch end")
     return total_loss / total_num, total_hit / total_num
 
 if __name__ == '__main__':
@@ -62,9 +63,9 @@ if __name__ == '__main__':
     for epoch in range(200):
         student_net.train()
         train_loss, train_acc = run_epoch(train_dataloader, update=True)
+        print(train_loss, train_acc)
         student_net.eval()
         valid_loss, valid_acc = run_epoch(valid_dataloader, update=False)
-
         # 存下最好的model。
         if valid_acc > now_best_acc:
             now_best_acc = valid_acc
