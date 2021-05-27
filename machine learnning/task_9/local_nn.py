@@ -33,7 +33,7 @@ class AutoEencoder(nn.Module):
         )
 
     def forward(self, x):
-        x1 = self.encoder(x)
+        x1 = self.encoder(x)#[64 256 4 4]
         x = self.decoder(x1)
         return x1, x
 
@@ -83,7 +83,7 @@ if __name__ == '__main__':
 
             epoch_loss = epoch_loss + loss.item()
 
-        print(f'epoch [{epoch + 1:.3d}], loss:{epoch_loss:.5f}')
+        print(f'epoch [{epoch + 1:0=3d}], loss:{epoch_loss:.5f}')
 
     # 訓練完成後儲存 model
     # torch.save(model.state_dict(), './checkpoints/last_checkpoint.pth')
