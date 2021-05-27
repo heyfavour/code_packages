@@ -1,5 +1,5 @@
 import numpy as np
-from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
 
 
 class Image_Dataset(Dataset):
@@ -23,7 +23,6 @@ def preprocess(image_list):
     """
     image_list = np.array(image_list)
     image_list = np.transpose(image_list, (0, 3, 1, 2))
-    print(image_list[0])
     image_list = (image_list / 255.0) * 2 - 1
     image_list = image_list.astype(np.float32)
     return image_list
@@ -33,8 +32,9 @@ def deal_data():
     trainX = np.load('trainX.npy')
     trainX = preprocess(trainX)
     img_dataset = Image_Dataset(trainX)
-    return img_dataset
+    img_dataloader = DataLoader(img_dataset, batch_size=64, shuffle=True)
+    return img_dataloader
 
 
 if __name__ == '__main__':
-    img_dataset = deal_data()
+    img_dataloader = deal_data()
