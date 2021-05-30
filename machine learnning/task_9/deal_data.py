@@ -28,8 +28,8 @@ def preprocess(image_list):
     return image_list
 
 
-def deal_data():
-    trainX = np.load('trainX.npy')
+def deal_data(data_set="trainX.npy"):
+    trainX = np.load(data_set)
     trainX = preprocess(trainX)
     img_dataset = Image_Dataset(trainX)
     img_dataloader = DataLoader(img_dataset, batch_size=64, shuffle=True)
