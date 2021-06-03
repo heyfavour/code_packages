@@ -1,4 +1,6 @@
 import torch
+import random
+
 from torch import nn
 
 emb_dim = 256
@@ -63,7 +65,7 @@ class Decoder(nn.Module):
         self.embedding2vocab2 = nn.Linear(self.hid_dim * 2, self.hid_dim * 4)
         self.embedding2vocab3 = nn.Linear(self.hid_dim * 4, self.cn_vocab_size)
 
-    def forward(self, input, hidden, encoder_outputs):#[1]*60 [3 60 1024] [6 50 1024]
+    def forward(self, input, hidden, encoder_outputs):  # [1]*60 [3 60 1024] [6 50 1024]
         # Decoder 只會是單向，所以 directions=1
         input = input.unsqueeze(1)  # [60 1]
         embedded = self.dropout(self.embedding(input))  # [60 1 256] [batch size, 1, emb dim]
@@ -104,17 +106,14 @@ class Seq2Seq(nn.Module):
 
         outputs = torch.zeros(batch_size, target_len, vocab_size).to(self.device)  # 準備一個儲存空間來儲存輸出 [60 50 3805]
 
-        for t in range(1, target_len):#50
-            print(t)
-            output, hidden = self.decoder(input, hidden, encoder_outputs)# [1]*60 [3 60 1024] [6 50 1024]
-            outputs[:, t] = output
-            # 決定是否用正確答案來做訓練
-            teacher_force = random.random() <= teacher_forcing_ratio
-            # 取出機率最大的單詞
-            top1 = output.argmax(1)
+        for t in range(1, target_len):  # 50
+            output, hidden = self.decoder(input, hidden, encoder_outputs)  # [1]*60 [3 60 1024] [6 50 1024]=>[60 3805]
+            outputs[:, t] = output#[60 3805]
+            teacher_force = True#random.random() <= teacher_forcing_ratio# 1
+            top1 = output.argmax(1)# 取出機率最大的單詞 [ n n n n n] 60
             # 如果是 teacher force 則用正解訓練，反之用自己預測的單詞做預測
-            input = target[:, t] if teacher_force and t < target_len else top1
-            preds.append(top1.unsqueeze(1))
+            input = target[:, t] #if teacher_force and t < target_len else top1 always True [60]
+            preds.append(top1.unsqueeze(1))#[60 1]
         preds = torch.cat(preds, 1)
         return outputs, preds
 

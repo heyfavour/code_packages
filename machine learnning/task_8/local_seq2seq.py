@@ -1,8 +1,13 @@
 import torch
+import numpy as np
 from torch import nn
 from torch.utils import data
 from deal_data import EN2CNDataset
 from network import build_model
+
+import nltk
+from nltk.translate.bleu_score import sentence_bleu
+from nltk.translate.bleu_score import SmoothingFunction
 
 batch_size = 60
 
@@ -33,14 +38,14 @@ def schedule_sampling():
 
 
 def train(model, optimizer, train_iter, loss_function, total_steps, summary_steps):
-    model.train()
+    model.train()  # Seq2Seq
     model.zero_grad()
     losses = []
     loss_sum = 0.0
     for step in range(summary_steps):  # 300
-        sources, targets = next(train_iter)#[60 50] 英文 [60 50] 中文
+        sources, targets = next(train_iter)  # [60 50] 英文 [60 50] 中文
         sources, targets = sources.to(device), targets.to(device)
-        outputs, preds = model(sources, targets, schedule_sampling())
+        outputs, preds = model(sources, targets, schedule_sampling())  # Seq2Seq [60 50 3805] [60 49]
         # targets 的第一個 token 是 <BOS> 所以忽略
         outputs = outputs[:, 1:].reshape(-1, outputs.size(2))
         targets = targets[:, 1:].reshape(-1)
@@ -48,18 +53,82 @@ def train(model, optimizer, train_iter, loss_function, total_steps, summary_step
 
         optimizer.zero_grad()
         loss.backward()
-        grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1)
+        grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), 1)  # 梯度裁剪
         optimizer.step()
 
         loss_sum += loss.item()
         if (step + 1) % 5 == 0:
             loss_sum = loss_sum / 5
-            print("\r", "train [{}] loss: {:.3f}, Perplexity: {:.3f}      ".format(total_steps + step + 1, loss_sum,
-                                                                                   np.exp(loss_sum)), end=" ")
+            print(f"train [{total_steps + step + 1}] loss: {loss_sum:.3f}, Perplexity: {np.exp(loss_sum):.3f}")
             losses.append(loss_sum)
             loss_sum = 0.0
 
     return model, optimizer, losses
+
+
+def tokens2sentence(outputs, int2word):  # 数字转句子
+    sentences = []
+    for tokens in outputs:
+        sentence = []
+        for token in tokens:
+            word = int2word[str(int(token))]
+            if word == '<EOS>':
+                break
+            sentence.append(word)
+        sentences.append(sentence)
+
+    return sentences
+
+
+def computebleu(sentences, targets):  # 计算得分
+    score = 0
+
+    def cut_token(sentence):
+        tmp = []
+        for token in sentence:
+            if token == '<UNK>' or token.isdigit() or len(bytes(token[0], encoding='utf-8')) == 1:
+                tmp.append(token)
+            else:
+                tmp += [word for word in token]
+        return tmp
+
+    for sentence, target in zip(sentences, targets):
+        sentence = cut_token(sentence)
+        target = cut_token(target)
+        score += sentence_bleu([target], sentence, weights=(1, 0, 0, 0))
+
+    return score
+
+
+def test(model, dataloader, loss_function):
+    model.eval()
+    loss_sum, bleu_score = 0.0, 0.0
+    n = 0
+    result = []
+    for sources, targets in dataloader:
+        sources, targets = sources.to(device), targets.to(device)
+        batch_size = sources.size(0)
+        outputs, preds = model.inference(sources, targets)
+        # targets 的第一個 token 是 <BOS> 所以忽略
+        outputs = outputs[:, 1:].reshape(-1, outputs.size(2))
+        targets = targets[:, 1:].reshape(-1)
+
+        loss = loss_function(outputs, targets)
+        loss_sum += loss.item()
+
+        # 將預測結果轉為文字
+        targets = targets.view(sources.size(0), -1)
+        preds = tokens2sentence(preds, dataloader.dataset.int2word_cn)  # 数字转句子
+        sources = tokens2sentence(sources, dataloader.dataset.int2word_en)  # 数字转句子
+        targets = tokens2sentence(targets, dataloader.dataset.int2word_cn)  # 数字转句子
+        for source, pred, target in zip(sources, preds, targets):
+            result.append((source, pred, target))
+        # 計算 Bleu Score
+        bleu_score = bleu_score + computebleu(preds, targets)  # 计算得分
+
+        n = n + batch_size
+
+    return loss_sum / len(dataloader), bleu_score / n, result
 
 
 def train_process():
@@ -83,17 +152,9 @@ def train_process():
         val_losses.append(val_loss)
         bleu_scores.append(bleu_score)
 
-        total_steps += config.summary_steps
-        print("\r", "val [{}] loss: {:.3f}, Perplexity: {:.3f}, blue score: {:.3f}       ".format(total_steps, val_loss,
-                                                                                                  np.exp(val_loss),
-                                                                                                  bleu_score))
-
-        # 儲存模型和結果
-        if total_steps % config.store_steps == 0 or total_steps >= config.num_steps:
-            save_model(model, optimizer, config.store_model_path, total_steps)
-            with open(f'{config.store_model_path}/output_{total_steps}.txt', 'w') as f:
-                for line in result:
-                    print(line, file=f)
+        total_steps = total_steps + summary_steps
+        print(
+            "val [{total_steps}] loss: {val_loss:.3f}, Perplexity: {np.exp(val_loss):.3f}, blue score: {bleu_score:.3f}")
 
     return train_losses, val_losses, bleu_scores
 
