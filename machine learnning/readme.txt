@@ -37,3 +37,13 @@ output_padding = 1
 kernel_size = 5
 stride = 2
 刚好使得input翻倍
+
+optimizer.zero_grad()             ## 梯度清零 
+preds = model(inputs)             ## inference
+loss = criterion(preds, targets)  ## 求解loss
+loss.backward()                   ## 反向传播求解梯度
+optimizer.step()                  ## 更新权重参数
+
+
+不进行optimizer.zero_grad()这一步操作，backward()的时候就会累加梯度 
+model.zero_grad() optimizer = optim.Optimizer(net.parameters()) 时两者等价
