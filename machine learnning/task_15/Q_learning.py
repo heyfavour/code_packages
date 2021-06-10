@@ -1,136 +1,105 @@
-import torch
-import torch.nn as nn
+"""
+value-based的算法
+学习一个Q——table 存起来S=>A 不同的S采用A的得分
+DQN就是用NN代替Q——table
+"""
+
 import numpy as np
-import gym
+import pandas as pd
+import time
 
-# 定义参数
-BATCH_SIZE = 64  # 每一批的训练量
-LR = 0.001  # 学习率
-EPSILON = 0.9  # 贪婪策略指数，Q-learning的一个指数，用于指示是探索还是利用。
-GAMMA = 0.9  # reward discount
-TARGET_REPLACE_ITER = 100  # target的更新频率
-MEMORY_CAPACITY = 8000#memery较小时，训练较快，但是后期效果没记忆体大好，建议动态记忆体，前期记忆体小，后期记忆体大
-env = gym.make('CartPole-v0')
-env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
-N_ACTIONS = env.action_space.n  # 2 2个动作
-N_STATES = env.observation_space.shape[0]  # 4 state的维度
-# to confirm the shape
-# 确定actiond的shape
-ENV_A_SHAPE = 0 if isinstance(env.action_space.sample(), int) else env.action_space.sample().shape
+np.random.seed(2)  # reproducible
+
+N_STATES = 6  # the length of the 1 dimensional world
+ACTIONS = ['left', 'right']  # available actions
+EPSILON = 0.9  # greedy police
+ALPHA = 0.1  # learning rate
+GAMMA = 0.9  # discount factor
+MAX_EPISODES = 13  # maximum episodes
+FRESH_TIME = 0.3  # fresh time for one move
 
 
-# 创建神经网络模型，输出的是可能的动作
-
-def weights_init(m):
-    classname = m.__class__.__name__
-    if classname == "Linear": m.weight.data.normal_(0.0, 0.1)
-    # m.bias.data.fill_(0)
-
-
-class QNet(nn.Module):
-    def __init__(self, ):
-        super().__init__()
-        self.model = nn.Sequential(
-            nn.Linear(N_STATES, 50),
-            nn.ReLU(),
-            nn.Linear(50, N_ACTIONS),
-            #nn.Softmax(dim=-1), 如果加了很难收敛
-
-        )
-        self.apply(weights_init)  # initialization
-
-    def forward(self, input):
-        output = self.model(input)
-        return output
+def build_q_table(n_states, actions):
+    table = pd.DataFrame(
+        np.zeros((n_states, len(actions))),  # q_table initial values
+        columns=actions,  # actions's name
+    )
+    #print(table)    # show table
+    return table #[6 2]
 
 
-# 创建Q-learning的模型
-class DQN(object):
-    def __init__(self):
-        # 两张网是一样的，不过就是target_net是每100次更新一次，eval_net每次都更新
-        self.eval_net, self.target_net = QNet(), QNet()
-
-        self.learn_step_counter = 0  # 如果次数到了，更新target_net
-        self.memory_counter = 0  # for storing memory
-        # 初始化记忆 [2000 10] 10=state+ action+reward+next_state
-        self.memory = np.zeros((MEMORY_CAPACITY, N_STATES * 2 + 2))
-        self.optimizer = torch.optim.AdamW(self.eval_net.parameters(), lr=LR)
-        self.loss_func = nn.MSELoss()
-
-    # 选择动作
-    def choose_action(self, state):
-        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]
-        # input only one sample
-        # np.random.uniform() 生成 0-1之间的小数
-        if np.random.uniform() < EPSILON:  # 贪婪策略
-            actions_value = self.eval_net.forward(state)
-            action = torch.max(actions_value, 1)[1].data.numpy()  # return the argmax index
-            action = action[0] if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
-        else:  # random
-            action = np.random.randint(0, N_ACTIONS)  # 随机产生一个action
-            action = action if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
-        return action
-
-    # 存储记忆
-    def store_transition(self, state, action, reward, next_state):
-        transition = np.hstack((state, [action, reward], next_state))  # 将每个参数打包起来 4+1+1+4 10
-        # replace the old memory with new memory
-        index = self.memory_counter % MEMORY_CAPACITY
-        self.memory[index, :] = transition
-        self.memory_counter = self.memory_counter + 1
-        #print(self.memory_counter)
-
-    def learn(self):
-        # target parameter update
-        if self.learn_step_counter % TARGET_REPLACE_ITER == 0:  # TARGET_REPLACE_ITER=100 target 更新的频率
-            self.target_net.load_state_dict(self.eval_net.state_dict())
-        self.learn_step_counter = self.learn_step_counter + 1
-
-        # 学习过程
-        sample_index = np.random.choice(MEMORY_CAPACITY, BATCH_SIZE)  # 2000中取多少个数
-        sample_memory = self.memory[sample_index, :]
-        sample_state = torch.FloatTensor(sample_memory[:, :N_STATES])
-        sample_action = torch.LongTensor(sample_memory[:, N_STATES:N_STATES + 1].astype(int))
-        sample_reward = torch.FloatTensor(sample_memory[:, N_STATES + 1:N_STATES + 2])
-        sample_next_state = torch.FloatTensor(sample_memory[:, -N_STATES:])
-
-        # q_eval w.r.t the action in experience
-        # shape (batch, 1) [32,2]=>[32 1]=[batch_size action_prob]
-        q_eval = self.eval_net(sample_state).gather(1,sample_action)
-        # detach的作用就是不反向传播去更新，因为target的更新在前面定义好了的 [batch_size action]
-        q_next = self.target_net(sample_next_state).detach()
-        q_target = sample_reward + GAMMA * q_next.max(1)[0].view(BATCH_SIZE, 1)  # shape (batch, 1) TD MC?
-        loss = self.loss_func(q_eval, q_target)
-
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
+def choose_action(state, q_table):
+    # This is how to choose an action
+    state_actions = q_table.iloc[state, :]#[1 2] [left right]
+    if (np.random.uniform() > EPSILON) or ((state_actions == 0).all()):  # act non-greedy or state-action have no value
+        action_name = np.random.choice(ACTIONS)#随机选择一个方法
+    else:  # act greedy
+        action_name = state_actions.idxmax()  # replace argmax to idxmax as argmax means a different function in newer version of pandas
+    return action_name
 
 
-if __name__ == '__main__':
-    dqn = DQN()
+def get_env_feedback(S, A):
+    # This is how agent will interact with the environment
+    if A == 'right':  # move right
+        if S == N_STATES - 2:  # terminate
+            S_ = 'terminal'
+            R = 1
+        else:
+            S_ = S + 1
+            R = 0
+    else:  # move left
+        R = 0
+        if S == 0:
+            S_ = S  # reach the wall
+        else:
+            S_ = S - 1
+    return S_, R
 
-    for epoch in range(100000):
-        state = env.reset()  # 搜集当前环境状态。
-        epoch_rewards = 0
-        while True:
-            env.render()
-            action = dqn.choose_action(state)
-            # take action
-            next_state, reward, done, info = env.step(action)
-            # modify the reward
-            x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
-            r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
-            r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
-            reward = r1 + r2
 
-            epoch_rewards = epoch_rewards + reward
+def update_env(S, episode, step_counter):#0 0 1
+    # This is how environment be updated
+    env_list = ['-'] * (N_STATES - 1) + ['T']  # '---------T' our environment
+    if S == 'terminal':
+        interaction = 'Episode %s: total_steps = %s' % (episode + 1, step_counter)
+        print('\r{}'.format(interaction), end='')
+        time.sleep(2)
+        print('\r                                ', end='')
+    else:
+        env_list[S] = 'o'
+        interaction = ''.join(env_list)
+        print('\r{}'.format(interaction), end='')
+        time.sleep(FRESH_TIME)
 
-            dqn.store_transition(state, action, reward, next_state)
 
-            if dqn.memory_counter > MEMORY_CAPACITY:  # 记忆超过2000次后
-                dqn.learn()
-                if done: print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)} |learn_step_counter {dqn.learn_step_counter}|memory_counter: {dqn.memory_counter}')
-            if done:
-                break
-            state = next_state
+def RL():
+    # main part of RL loop
+    q_table = build_q_table(N_STATES, ACTIONS)  # [6,2]
+    for episode in range(MAX_EPISODES):  # 13
+        step_counter = 0
+        S = 0
+        is_terminated = False
+        update_env(S, episode, step_counter)
+        while not is_terminated:
+            A = choose_action(S, q_table)
+            # 返回下一个环境和分数，不必过于考虑这个做了什么，就是手写了一种游戏而已
+            S_, R = get_env_feedback(S, A)  # take action & get next state and reward
+            q_predict = q_table.loc[S, A]#根据state 和 action 预测得分
+            if S_ != 'terminal':
+                #没结束 R+GAMMA*Q中最好的策略的最大值来更新
+                q_target = R + GAMMA * q_table.iloc[S_, :].max()  # next state is not terminal
+            else:
+                #结束 R
+                q_target = R  # next state is terminal
+                is_terminated = True  # terminate this episode
+            #Q = Q+ALPHA*LOSS
+            q_table.loc[S, A] =q_table.loc[S, A]+ ALPHA * (q_target - q_predict)  # update q_table
+            S = S_  # move to next state
+            update_env(S, episode, step_counter + 1)#更新游戏环境
+            step_counter += 1
+    return q_table
+
+
+if __name__ == "__main__":
+    q_table = RL()
+    # print('\r\nQ-table:\n')
+    print(q_table)

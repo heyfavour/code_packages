@@ -26,24 +26,24 @@ N_A = env.action_space.n
 
 
 class Net(nn.Module):
-    def __init__(self, s_dim, a_dim):
+    def __init__(self, state_dim, action_dim):#Q-funcion state+action
         super().__init__()
         self.logit_model = nn.Sequential(
-            nn.Linear(s_dim, 128),
+            nn.Linear(state_dim, 128),
             nn.Tanh(),
-            nn.Linear(128, a_dim),
+            nn.Linear(128, action_dim),
         )
         self.value_model = nn.Sequential(
-            nn.Linear(s_dim, 128),
+            nn.Linear(state_dim, 128),
             nn.Tanh,
             nn.Linear(128, 1)
         )
         self.apply(weights_init)
         self.distribution = torch.distributions.Categorical
 
-    def forward(self, x):
-        logits = self.logit_model(x)
-        values = self.value_model(x)
+    def forward(self, input):
+        logits = self.logit_model(input)
+        values = self.value_model(input)
         return logits, values
 
     def choose_action(self, s):
