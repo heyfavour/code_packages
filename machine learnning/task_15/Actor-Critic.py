@@ -41,6 +41,7 @@ class Policy(nn.Module):
         self.save_actions = []
         self.rewards = []
 
+    # Actor网络和Critic网络可以共享网络参数，两者仅最后几层使用不同结构和参数
     def forward(self, input):
         x = self.pre_model(input)
         action_score = self.action_head(x)
@@ -57,7 +58,7 @@ def select_action(state):
     probs, state_value = model(state)
     m = Categorical(probs)
     action = m.sample()
-    model.save_actions.append(SavedAction(m.log_prob(action), state_value))#ln[ation] value
+    model.save_actions.append(SavedAction(m.log_prob(action), state_value))  # ln[ation] value sore_memery
     return action.item()
 
 
@@ -66,17 +67,17 @@ def finish_episode():
     save_actions = model.save_actions
     policy_loss = []
     value_loss = []
-    rewards = []
+    rewards = []  # 存放衰减处理后的分数
 
-    for r in model.rewards[::-1]:
+    for r in model.rewards[::-1]:  # 分数倒叙
         R = r + gamma * R
         rewards.insert(0, R)
 
     rewards = torch.tensor(rewards)
-    rewards = (rewards - rewards.mean()) / (rewards.std() + eps)
+    rewards = (rewards - rewards.mean()) / (rewards.std() + eps)  # 归一化
 
-    for (log_prob, value), r in zip(save_actions, rewards):
-        reward = r - value.item()
+    for (log_prob, value), r in zip(save_actions, rewards):  # A R log_prob value
+        reward = r - value.item()  # reward - value
         policy_loss.append(-log_prob * reward)
         value_loss.append(F.smooth_l1_loss(value, torch.tensor([r])))
 
@@ -91,21 +92,16 @@ def finish_episode():
 
 if __name__ == '__main__':
     running_reward = 10
-    live_time = []
-    for i_episode in count(episodes):
+    for epoch in range(episodes):
         state = env.reset()
-        env.render()
-        for t in count():
-            action = select_action(state)
+        for step in count():
+            env.render()
+            action = select_action(state)  # 选择行为+保存记忆
             state, reward, done, info = env.step(action)
-            model.rewards.append(reward)
+            model.rewards.append(reward)  # 保存分数
 
-            if done or t >= 1000:
-                break
-        running_reward = running_reward * 0.99 + t * 0.01
-        live_time.append(t)
-        #plot(live_time)
-        if i_episode % 100 == 0:
-            modelPath = './AC_CartPole_Model/ModelTraing' + str(i_episode) + 'Times.pkl'
-            #torch.save(model, modelPath)
+            if done: break
+        running_reward = running_reward * 0.99 + step * 0.01
+        print(f"Epoch:{epoch} | Step:{step}")
+        # torch.save(model, modelPath)
         finish_episode()
