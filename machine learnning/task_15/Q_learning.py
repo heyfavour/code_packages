@@ -1,105 +1,76 @@
-"""
-value-based的算法
-学习一个Q——table 存起来S=>A 不同的S采用A的得分
-DQN就是用NN代替Q——table
-"""
-
-import numpy as np
-import pandas as pd
+import gym
 import time
+import numpy as np
 
-np.random.seed(2)  # reproducible
+from gridworld import CliffWalkingWapper
 
-N_STATES = 6  # the length of the 1 dimensional world
-ACTIONS = ['left', 'right']  # available actions
-EPSILON = 0.9  # greedy police
-ALPHA = 0.1  # learning rate
-GAMMA = 0.9  # discount factor
-MAX_EPISODES = 13  # maximum episodes
-FRESH_TIME = 0.3  # fresh time for one move
+EPSILON = 0.9
+GAMMA = 0.9
+LEARNING_RATE = 0.1
 
 
-def build_q_table(n_states, actions):
-    table = pd.DataFrame(
-        np.zeros((n_states, len(actions))),  # q_table initial values
-        columns=actions,  # actions's name
-    )
-    #print(table)    # show table
-    return table #[6 2]
+class QLearningAgent():
+    def __init__(self, dim_state, dim_action):
+        self.dim_state = dim_state
+        self.dim_action = dim_action
+        # Q评估Q+A的表
+        self.Q_TABLE = np.zeros((dim_state, dim_action))  # [dim_state dim_action]
 
-
-def choose_action(state, q_table):
-    # This is how to choose an action
-    state_actions = q_table.iloc[state, :]#[1 2] [left right]
-    if (np.random.uniform() > EPSILON) or ((state_actions == 0).all()):  # act non-greedy or state-action have no value
-        action_name = np.random.choice(ACTIONS)#随机选择一个方法
-    else:  # act greedy
-        action_name = state_actions.idxmax()  # replace argmax to idxmax as argmax means a different function in newer version of pandas
-    return action_name
-
-
-def get_env_feedback(S, A):
-    # This is how agent will interact with the environment
-    if A == 'right':  # move right
-        if S == N_STATES - 2:  # terminate
-            S_ = 'terminal'
-            R = 1
+    def choose_action(self, state,explode=True):
+        if np.random.uniform() > EPSILON and explode:  # >0.9则选择
+            action = np.random.choice(self.dim_action)  # 随机选择一个方法
         else:
-            S_ = S + 1
-            R = 0
-    else:  # move left
-        R = 0
-        if S == 0:
-            S_ = S  # reach the wall
+            Q_LIST = self.Q_TABLE[state, :]  # 这个state下所有的action的值
+            max_Q = np.max(Q_LIST)  # 最大的action
+            action_list = np.where(Q_LIST == max_Q)[0]  # 最大值可能有多个 返回索引 []
+            action = np.random.choice(action_list)  # 最大值随机选取
+        return action
+
+    def learn(self, state, action, reward, next_state, next_action, done):
+        predict_Q = self.Q_TABLE[state, action]  # Q_table表找到对应Q的评估值
+        if done:
+            target_Q = reward
         else:
-            S_ = S - 1
-    return S_, R
+            # Q <- Q + a*[(R + y*next_Q) - Q] Q_TABLE预测 max_action(Q(s',a))
+            target_Q = reward + GAMMA * np.max(self.Q_TABLE[next_state,:])
+        self.Q_TABLE[state, action] = self.Q_TABLE[state, action] + LEARNING_RATE * (target_Q - predict_Q)
 
 
-def update_env(S, episode, step_counter):#0 0 1
-    # This is how environment be updated
-    env_list = ['-'] * (N_STATES - 1) + ['T']  # '---------T' our environment
-    if S == 'terminal':
-        interaction = 'Episode %s: total_steps = %s' % (episode + 1, step_counter)
-        print('\r{}'.format(interaction), end='')
-        time.sleep(2)
-        print('\r                                ', end='')
-    else:
-        env_list[S] = 'o'
-        interaction = ''.join(env_list)
-        print('\r{}'.format(interaction), end='')
-        time.sleep(FRESH_TIME)
+if __name__ == '__main__':
+    env = gym.make("CliffWalking-v0")
+    env = CliffWalkingWapper(env)
+    dim_state = env.observation_space.n  # 48
+    dim_action = env.action_space.n  # 4
+    agent = QLearningAgent(dim_state, dim_action)
 
+    for epoch in range(500):
+        state = env.reset()  # 开始一局游戏
 
-def RL():
-    # main part of RL loop
-    q_table = build_q_table(N_STATES, ACTIONS)  # [6,2]
-    for episode in range(MAX_EPISODES):  # 13
-        step_counter = 0
-        S = 0
-        is_terminated = False
-        update_env(S, episode, step_counter)
-        while not is_terminated:
-            A = choose_action(S, q_table)
-            # 返回下一个环境和分数，不必过于考虑这个做了什么，就是手写了一种游戏而已
-            S_, R = get_env_feedback(S, A)  # take action & get next state and reward
-            q_predict = q_table.loc[S, A]#根据state 和 action 预测得分
-            if S_ != 'terminal':
-                #没结束 R+GAMMA*Q中最好的策略的最大值来更新
-                q_target = R + GAMMA * q_table.iloc[S_, :].max()  # next state is not terminal
-            else:
-                #结束 R
-                q_target = R  # next state is terminal
-                is_terminated = True  # terminate this episode
-            #Q = Q+ALPHA*LOSS
-            q_table.loc[S, A] =q_table.loc[S, A]+ ALPHA * (q_target - q_predict)  # update q_table
-            S = S_  # move to next state
-            update_env(S, episode, step_counter + 1)#更新游戏环境
-            step_counter += 1
-    return q_table
+        total_rewards, total_steps = 0, 0
+        action = agent.choose_action(state)
+        while True:
+            #env.render()
+            next_state, reward, done, _ = env.step(action)  # 采取该行为获取下一个state 及分数
+            next_action = agent.choose_action(next_state)  # 行为 概率
+            agent.learn(state, action, reward, next_state, next_action, done)
+            action = next_action
+            state = next_state
+            total_steps = total_steps + 1
+            total_rewards = total_rewards + reward
+            if done:break
+            print(f"Epoch:{epoch}|Total_steps:{total_steps}|Total_rewards:{total_rewards}")
+    #EVAL
+    state = env.reset()  # 开始一局游戏
 
+    action = agent.choose_action(state)
+    while True:
+        env.render()
+        next_state, reward, done, _ = env.step(action)  # 采取该行为获取下一个state 及分数
+        next_action = agent.choose_action(next_state,False)  # 行为 概率
+        action = next_action
+        state = next_state
+        if done: break
+        time.sleep(0.5)
+    print(f"Epoch:{epoch}|Total_steps:{total_steps}|Total_rewards:{total_rewards}")
+    print(agent.Q_TABLE)
 
-if __name__ == "__main__":
-    q_table = RL()
-    # print('\r\nQ-table:\n')
-    print(q_table)
