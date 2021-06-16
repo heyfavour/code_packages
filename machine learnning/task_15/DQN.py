@@ -66,16 +66,22 @@ class DQN_Agent(object):
         # input only one sample
         # np.random.uniform() 生成 0-1之间的小数
         if np.random.uniform() < epsilon:  # 贪婪策略
-            # actions_value = self.eval_net.forward(state)#[1 2] 莫凡pyhon中使用forward不是很理解
-            actions_value = self.eval_net(state)  # [1 2]
-            # torch.max(actions_value) 返回最大的value
-            # torch.max(actions_value,1) 返回最大的(value index)
-            action = torch.max(actions_value, 1)[1].data.numpy()  # return the argmax index
-            action = action[0] if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
+            action = self.predict(state)
         else:  # random
             action = np.random.randint(0, N_ACTIONS)  # 随机产生一个action
             action = action if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
         return action
+    
+    def predict(self,state):
+        with torch.no_grad():
+            # actions_value = self.eval_net.forward(state)#[1 2] 莫凡pyhon中使用forward不是很理解
+            actions_value = self.eval_net(state)  # [1 2]
+            # torch.max(actions_value) 返回最大的value
+            # torch.max(actions_value,1) 返回最大的(value index)
+            action = actions_value.max(1)[1].item()
+            #action = torch.max(actions_value, 1)[1].data.numpy()  # return the argmax index
+            #action = action[0] if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
+            return action
 
     # 存储记忆
     def store_transition(self, state, action, reward, next_state):
