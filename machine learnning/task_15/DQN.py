@@ -1,3 +1,6 @@
+"""
+double DQN 使用了target net
+"""
 import torch
 import torch.nn as nn
 import numpy as np
@@ -71,7 +74,7 @@ class DQN_Agent(object):
             action = np.random.randint(0, N_ACTIONS)  # 随机产生一个action
             action = action if ENV_A_SHAPE == 0 else action.reshape(ENV_A_SHAPE)  # 如果action是多维度的则变形
         return action
-    
+
     def predict(self,state):
         with torch.no_grad():
             # actions_value = self.eval_net.forward(state)#[1 2] 莫凡pyhon中使用forward不是很理解
