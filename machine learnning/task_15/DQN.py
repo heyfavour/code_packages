@@ -117,7 +117,7 @@ class DQN_Agent(object):
 if __name__ == '__main__':
     dqn = DQN_Agent()
 
-    for epoch in range(300):
+    for epoch in range(1000):
         state = env.reset()  # 搜集当前环境状态。
         epoch_rewards = 0
         while True:
@@ -153,10 +153,10 @@ if __name__ == '__main__':
             # take action
             next_state, reward, done, info = env.step(action)
             # modify the reward 如果不重定义分数，相当难收敛
-            x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
-            r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
-            r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
-            reward = r1 + r2
+            # x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
+            # r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
+            # r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
+            # reward = r1 + r2
 
             epoch_rewards = epoch_rewards + reward
 
