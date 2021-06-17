@@ -1,10 +1,9 @@
 import gym
 import torch
-import random
 import numpy as np
 import torch.nn as nn
 
-from memery import Memory
+from PER_DQN.memery import Memory
 
 # 定义参数
 BATCH_SIZE = 64  # 每一批的训练量
@@ -30,11 +29,9 @@ class NET(nn.Module):
     def __init__(self, ):
         super().__init__()
         self.model = nn.Sequential(
-            nn.Linear(N_STATES, 50),
+            nn.Linear(N_STATES, 20),
             nn.ReLU(),
-            nn.Linear(50, 50),  # 2层隐藏层以后效果更好 一层时，到200d多epoch才收敛
-            nn.ReLU(),
-            nn.Linear(50, N_ACTIONS),
+            nn.Linear(20, N_ACTIONS),
         )
         self.apply(weights_init)  # initialization
 
@@ -54,6 +51,7 @@ class PER_DQN():
         self.eval_net, self.target_net = NET(), NET()
         self.optimizer = torch.optim.AdamW(self.eval_net.parameters(), lr=LR)
         self.update_target_model()
+        self.loss_func = nn.MSELoss()
 
     # after some time interval update the target model to be same with model
     def update_target_model(self):
@@ -77,21 +75,17 @@ class PER_DQN():
     # save sample (error,<s,a,r,s'>) to the replay memory
     def store_transition(self, state, action, reward, next_state, done):
         q_eval = self.eval_net(torch.FloatTensor(state)).detach()[action]
-        q_target = self.target_net(torch.FloatTensor(next_state)).detach()
-        print(q_eval,q_target)
-        if done:
-            target = reward
-        else:
-            target = reward + GAMMA * torch.max(q_target)
-        print(target)
-        error = abs(q_eval - target)
+        target_val = self.target_net(torch.FloatTensor(next_state)).detach().max(-1)[0]
+        # q_target = torch.where(done, reward, reward + GAMMA * target_val)
+        q_target = reward if done else reward + GAMMA * target_val
+        error = abs(q_eval - q_target)
         self.memory.add(error, (state, action, reward, next_state, done))
 
     # pick samples from prioritized replay memory (with batch_size)
-    def train_model(self):
+    def learn(self):
         if self.epsilon < self.epsilon_max: self.epsilon = self.epsilon + self.epsilon_decay
 
-        mini_batch, idxs, is_weights = self.memory.sample(self.batch_size)
+        mini_batch, idxs, is_weights = self.memory.sample(BATCH_SIZE)
         mini_batch = np.array(mini_batch).transpose()
 
         states = np.vstack(mini_batch[0])
@@ -105,12 +99,12 @@ class PER_DQN():
 
         # Q function of current state
         states = torch.Tensor(states)
-        pred = self.model(states)
+        pred = self.eval_net(states)
 
         # one-hot encoding
         a = torch.LongTensor(actions).view(-1, 1)
 
-        one_hot_action = torch.FloatTensor(self.batch_size, self.action_size).zero_()
+        one_hot_action = torch.FloatTensor(BATCH_SIZE, N_ACTIONS).zero_()
         one_hot_action.scatter_(1, a, 1)
 
         pred = torch.sum(pred.mul(one_hot_action), dim=1)
@@ -118,7 +112,7 @@ class PER_DQN():
         # Q function of next state
         next_states = torch.Tensor(next_states)
         next_states = next_states.float()
-        next_pred = self.target_model(next_states).data
+        next_pred = self.target_net(next_states).data
 
         rewards = torch.FloatTensor(rewards)
         dones = torch.FloatTensor(dones)
@@ -129,16 +123,15 @@ class PER_DQN():
         errors = torch.abs(pred - target).data.numpy()
 
         # update priority
-        for i in range(self.batch_size):
+        for i in range(BATCH_SIZE):
             idx = idxs[i]
             self.memory.update(idx, errors[i])
 
         self.optimizer.zero_grad()
 
         # MSE Loss function
-        loss = (torch.FloatTensor(is_weights) * F.mse_loss(pred, target)).mean()
+        loss = (torch.FloatTensor(is_weights) * self.loss_func(pred, target)).mean()
         loss.backward()
-
         # and train
         self.optimizer.step()
 
@@ -154,38 +147,21 @@ def modify_reward(state):
 
 if __name__ == "__main__":
     agent = PER_DQN()
-    for e in range(400):
+    for epoch in range(400):
         state = env.reset()
         epoch_rewards = 0
         while True:
-            # env.render()
+            #env.render()
             action = agent.choose_action(state)
             next_state, reward, done, info = env.step(action)
             reward = modify_reward(next_state)
-            epoch_rewards = epoch_rewards + reward
-            agent.store_transition(state, action, reward, next_state, done)# save the sample <s, a, r, s'> to the replay memory
-            # every time step do the training
-            if agent.memory.tree.n_entries >= agent.train_start:
-                agent.train_model()
-
-            score += reward
+            agent.store_transition(state, action, reward, next_state, done)
             state = next_state
 
+            epoch_rewards = epoch_rewards + reward
+            if agent.memory.tree.n_entries >= MEMORY_CAPACITY:
+                agent.learn()
+                if done: print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}')
             if done:
-                # every episode update the target model to be same with model
-                agent.update_target_model()
-
-                # every episode, plot the play time
-                score = score if score == 500 else score + 10
-                scores.append(score)
-                episodes.append(e)
-                pylab.plot(episodes, scores, 'b')
-                pylab.savefig("./save_graph/cartpole_dqn.png")
-                print("episode:", e, "  score:", score, "  memory length:",
-                      agent.memory.tree.n_entries, "  epsilon:", agent.epsilon)
-
-                # if the mean of scores of last 10 episode is bigger than 490
-                # stop training
-                if np.mean(scores[-min(10, len(scores)):]) > 490:
-                    torch.save(agent.model, "./save_model/cartpole_dqn")
-                    sys.exit()
+                break
+            state = next_state
