@@ -12,7 +12,7 @@ LR = 0.001  # 学习率
 EPSILON = 0.9  # 贪婪策略指数，Q-learning的一个指数，用于指示是探索还是利用。
 GAMMA = 0.9  # reward discount
 TARGET_REPLACE_ITER = 100  # target的更新频率
-MEMORY_CAPACITY = 2000  # memery较小时，训练较快，但是后期效果没记忆体大好，建议动态记忆体，前期记忆体小，后期记忆体大
+MEMORY_CAPACITY = 1000  # memery较小时，训练较快，但是后期效果没记忆体大好，建议动态记忆体，前期记忆体小，后期记忆体大
 
 env = gym.make('CartPole-v0')
 env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
@@ -41,7 +41,6 @@ class Q_TABLE_NET(nn.Module):
             nn.ReLU(),
             nn.Linear(50, N_ACTIONS),
             # nn.Softmax(dim=-1), 如果加了很难收敛
-
         )
         # self.apply(weights_init)  # initialization
 
@@ -64,11 +63,9 @@ class DQN_Agent(object):
         self.loss_func = nn.MSELoss()
 
     # 选择动作
-    def choose_action(self, state,epsilon=EPSILON):
-        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
-        # input only one sample
+    def choose_action(self, state):
         # np.random.uniform() 生成 0-1之间的小数
-        if np.random.uniform() < epsilon:  # 贪婪策略
+        if np.random.uniform() < EPSILON:  # 贪婪策略
             action = self.predict(state)
         else:  # random
             action = np.random.randint(0, N_ACTIONS)  # 随机产生一个action
@@ -76,6 +73,7 @@ class DQN_Agent(object):
         return action
 
     def predict(self,state):
+        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
         with torch.no_grad():
             # actions_value = self.eval_net.forward(state)#[1 2] 莫凡pyhon中使用forward不是很理解
             actions_value = self.eval_net(state)  # [1 2]
@@ -126,7 +124,7 @@ class DQN_Agent(object):
 if __name__ == '__main__':
     dqn = DQN_Agent()
 
-    for epoch in range(1000):
+    for epoch in range(400):
         state = env.reset()  # 搜集当前环境状态。
         epoch_rewards = 0
         while True:
@@ -155,17 +153,15 @@ if __name__ == '__main__':
     with torch.no_grad():
         state = env.reset()  # 搜集当前环境状态。
         epoch_rewards = 0
-        EPSILON = 1
         while True:
             #env.render()
-            action = dqn.choose_action(state,EPSILON)
-            # take action
+            action = dqn.predict(state)
             next_state, reward, done, info = env.step(action)
             # modify the reward 如果不重定义分数，相当难收敛
-            # x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
-            # r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
-            # r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
-            # reward = r1 + r2
+            x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
+            r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
+            r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
+            reward = r1 + r2
 
             epoch_rewards = epoch_rewards + reward
 
