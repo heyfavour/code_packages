@@ -1,3 +1,7 @@
+"""
+原版是记忆池add新数据时就传入TD_ERROR存入，并且sample以后更新p 但是这样存在sample异常（新的数据无法被sample 并且一直sample loss大的数据）
+莫凡的版本是新的数据都是最大。然后不断更新p 直到比 1小 然后越来越小概率被sample ,逻辑上更为合适一点
+"""
 import gym
 import torch
 import random
@@ -5,7 +9,7 @@ import numpy as np
 import torch.nn as nn
 
 # 定义参数
-BATCH_SIZE = 64  # 每一批的训练量
+BATCH_SIZE = 128  # 每一批的训练量
 LR = 0.001  # 学习率
 GAMMA = 0.9  # reward discount
 TARGET_REPLACE_ITER = 100  # target的更新频率
@@ -68,6 +72,7 @@ class SumTree:  # p越大，越容易sample到
     def total(self):
         return self.tree[0]
 
+
 class Memory:  # stored as ( s, a, r, s_ ) in SumTree
     alpha = 0.6  # [0~1] Importance Sampling.alpha=0 退化为均匀采样
     epsilon = 0.01  # small amount to avoid zero priority
@@ -79,14 +84,15 @@ class Memory:  # stored as ( s, a, r, s_ ) in SumTree
     def __init__(self, capacity):
         self.tree = SumTree(capacity)
 
+    def add(self, sample):  # 新增的永远优先
+        p = np.max(self.tree.tree[-self.tree.capacity:])
+        if p == 0: p = self.clip_error  # 刚开始时没数据max_p=0
+        self.tree.add(p, sample)
+
     def _get_priority(self, error):  # p的范围在[epsilon,clip_error]
         error = np.abs(error) + self.epsilon  # convert to abs and avoid 0
         clip_error = np.minimum(error, self.clip_error)
         return clip_error ** self.alpha  # error越大p越大 但是p有上线
-
-    def add(self, error, sample):
-        p = self._get_priority(error)
-        self.tree.add(p, sample)
 
     def update(self, idx, error):
         p = self._get_priority(error)
@@ -114,6 +120,7 @@ class Memory:  # stored as ( s, a, r, s_ ) in SumTree
         is_weight = np.power(self.tree.length * sampling_probabilities, -self.beta)  # (2000*p/p_sum)^-a MF （p/min_p)^-a
         is_weight = is_weight / is_weight.max()  #
         return batch, idxs, is_weight  #
+
 
 def weights_init(m):
     classname = m.__class__.__name__
@@ -146,6 +153,8 @@ class PER_DQN():
         self.memory = Memory(MEMORY_CAPACITY)
         self.eval_net, self.target_net = NET(), NET()
         self.optimizer = torch.optim.AdamW(self.eval_net.parameters(), lr=LR)
+
+        self.learn_step_counter = 0
         self.update_target_model()
         self.loss_func = nn.MSELoss()
 
@@ -170,65 +179,41 @@ class PER_DQN():
 
     # save sample (error,<s,a,r,s'>) to the replay memory
     def store_transition(self, state, action, reward, next_state, done):
-        q_eval = self.eval_net(torch.FloatTensor(state)).detach()[action]
-        target_val = self.target_net(torch.FloatTensor(next_state)).detach().max(-1)[0]
-        # q_target = torch.where(done, reward, reward + GAMMA * target_val)
-        q_target = reward if done else reward + GAMMA * target_val
-        error = abs(q_eval - q_target)
-        self.memory.add(error, (state, action, reward, next_state, done))
+        # transition = np.hstack((state, [action, reward], next_state))
+        self.memory.add((state, action, reward, next_state, done))
 
     # pick samples from prioritized replay memory (with batch_size)
     def learn(self):
+        # step 1 更新epsilon 慢慢提高策略的选取机率
         if self.epsilon < self.epsilon_max: self.epsilon = self.epsilon + self.epsilon_decay
+        # step 2  每N步更新一次target_net
+        if self.learn_step_counter % TARGET_REPLACE_ITER == 0: self.update_target_model()
+        self.learn_step_counter = self.learn_step_counter + 1
 
-        mini_batch, idxs, is_weights = self.memory.sample(BATCH_SIZE)
-        mini_batch = np.array(mini_batch).transpose()
+        batch, idxs, is_weight = self.memory.sample(BATCH_SIZE)
+        batch = np.array(batch, dtype=object).transpose()
 
-        states = np.vstack(mini_batch[0])
-        actions = list(mini_batch[1])
-        rewards = list(mini_batch[2])
-        next_states = np.vstack(mini_batch[3])
-        dones = mini_batch[4]
+        sample_state = torch.FloatTensor(np.vstack(batch[0]))
+        sample_action = torch.LongTensor(list(batch[1])).view(-1, 1)
+        sample_reward = torch.FloatTensor(list(batch[2])).view(-1, 1)
+        sample_next_state = torch.FloatTensor(np.vstack(batch[3]))
+        sample_done = torch.FloatTensor(batch[4].astype(int)).view(-1, 1)
 
-        # bool to binary
-        dones = dones.astype(int)
+        q_eval = self.eval_net(sample_state).gather(1, sample_action)  # 去对应的acion的实际output
 
-        # Q function of current state
-        states = torch.Tensor(states)
-        pred = self.eval_net(states)
-
-        # one-hot encoding
-        a = torch.LongTensor(actions).view(-1, 1)
-
-        one_hot_action = torch.FloatTensor(BATCH_SIZE, N_ACTIONS).zero_()
-        one_hot_action.scatter_(1, a, 1)
-
-        pred = torch.sum(pred.mul(one_hot_action), dim=1)
-
-        # Q function of next state
-        next_states = torch.Tensor(next_states)
-        next_states = next_states.float()
-        next_pred = self.target_net(next_states).data
-
-        rewards = torch.FloatTensor(rewards)
-        dones = torch.FloatTensor(dones)
-
-        # Q Learning: get maximum Q value at s' from target model
-        target = rewards + (1 - dones) * GAMMA * next_pred.max(1)[0]
-
-        errors = torch.abs(pred - target).data.numpy()
+        q_next = self.target_net(sample_next_state).detach()
+        # target = rewards + (1 - dones) * GAMMA * next_pred.max(1)[0]
+        q_target = sample_reward + (1 - sample_done) * GAMMA * q_next.max(1)[0].view(BATCH_SIZE, 1)
+        error = torch.abs(q_eval - q_target).data.numpy()
 
         # update priority
         for i in range(BATCH_SIZE):
             idx = idxs[i]
-            self.memory.update(idx, errors[i])
+            self.memory.update(idx, error[i][0])
 
         self.optimizer.zero_grad()
-
-        # MSE Loss function
-        loss = (torch.FloatTensor(is_weights) * self.loss_func(pred, target)).mean()
+        loss = (torch.FloatTensor(is_weight) * self.loss_func(q_eval, q_target)).mean()
         loss.backward()
-        # and train
         self.optimizer.step()
 
 
@@ -247,7 +232,7 @@ if __name__ == "__main__":
         state = env.reset()
         epoch_rewards = 0
         while True:
-            #env.render()
+            # env.render()
             action = agent.choose_action(state)
             next_state, reward, done, info = env.step(action)
             reward = modify_reward(next_state)
@@ -255,9 +240,10 @@ if __name__ == "__main__":
             state = next_state
 
             epoch_rewards = epoch_rewards + reward
-            if agent.memory.tree.n_entries >= MEMORY_CAPACITY:
+            if agent.memory.tree.length >= MEMORY_CAPACITY:
                 agent.learn()
                 if done: print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}')
+                # print(agent.memory.tree.tree[-MEMORY_CAPACITY:])
             if done:
                 break
             state = next_state
