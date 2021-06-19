@@ -1,6 +1,11 @@
 """
 原版是记忆池add新数据时就传入TD_ERROR存入，并且sample以后更新p 但是这样存在sample异常（新的数据无法被sample 并且一直sample loss大的数据）
 莫凡的版本是新的数据都是最大。然后不断更新p 直到比 1小 然后越来越小概率被sample ,逻辑上更为合适一点
+https://zhuanlan.zhihu.com/p/29336095
+https://zhuanlan.zhihu.com/p/47578210
+https://github.com/AmazingAng/deep-RL-elements/blob/master/2_DQN_PER.ipynb
+https://mofanpy.com/tutorials/machine-learning/reinforcement-learning/prioritized-replay/
+https://github.com/MorvanZhou/Reinforcement-learning-with-tensorflow/tree/master/contents/5.2_Prioritized_Replay_DQN
 """
 import gym
 import torch
@@ -46,8 +51,9 @@ class SumTree:  # p越大，越容易sample到
         self._propagate(idx, change)
 
     def add(self, p, data):  # p sample的概率，也是error的大小 data state 需要储存的数据
-        self.data[self.wirte] = data
         idx = self.wirte + self.capacity - 1  # idx=>tree.idx
+
+        self.data[self.wirte] = data
         self.update(idx, p)
 
         self.wirte = self.wirte + 1
@@ -74,7 +80,7 @@ class SumTree:  # p越大，越容易sample到
 
 
 class Memory:  # stored as ( s, a, r, s_ ) in SumTree
-    alpha = 0.6  # [0~1] Importance Sampling.alpha=0 退化为均匀采样
+    alpha = 0.9  # [0~1] Importance Sampling.alpha=0 退化为均匀采样
     epsilon = 0.01  # small amount to avoid zero priority
 
     beta = 0.4
@@ -205,7 +211,6 @@ class PER_DQN():
         # target = rewards + (1 - dones) * GAMMA * next_pred.max(1)[0]
         q_target = sample_reward + (1 - sample_done) * GAMMA * q_next.max(1)[0].view(BATCH_SIZE, 1)
         error = torch.abs(q_eval - q_target).data.numpy()
-
         # update priority
         for i in range(BATCH_SIZE):
             idx = idxs[i]
