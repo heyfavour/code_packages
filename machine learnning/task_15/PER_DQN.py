@@ -240,7 +240,7 @@ if __name__ == "__main__":
             # env.render()
             action = agent.choose_action(state)
             next_state, reward, done, info = env.step(action)
-            reward = modify_reward(next_state)
+            # reward = modify_reward(next_state)
             agent.store_transition(state, action, reward, next_state, done)
             state = next_state
 
