@@ -38,21 +38,17 @@ class Nstep_Memory(object):
     def sample(self, batch_size=BATCH_SIZE):
         if self.n_multi_step == 1:
             sample_index = np.random.choice(self.memory_size, batch_size)  # 2000中取一个batch index [batch_size]
-            sample_memory = list(self.memory[sample_index])  #
-            sample_memory = np.array(sample_memory, dtype=object).transpose()  # [(s a r s) ] -> [(s) (a) (r) (s)]
+            sample_memory = np.array(list(self.memory[sample_index]), dtype=object).transpose()  # [(s a r s) ] -> [(s) (a) (r) (s)]
             sample_state = torch.FloatTensor(np.vstack(sample_memory[0]))
             sample_action = torch.LongTensor(list(sample_memory[1])).view(-1, 1)
             sample_reward = torch.FloatTensor(list(sample_memory[2])).view(-1, 1)
             sample_next_state = torch.FloatTensor(np.vstack(sample_memory[3]))
             sample_done = torch.FloatTensor(sample_memory[4].astype(int)).view(-1, 1)
         else:
-            sample_index = np.random.choice(self.memory_size-self.n_multi_step, batch_size)  # 2000中取一个batch index [batch_size--self.n_multi_step] 防止数据不够
-            sample_index = [(self.memory_counter+i)%1000 for i in list(sample_index)]
-            print(sample_index)
-            sample_index = [(1 + i) % 1000 for i in range(997)]
-            sample_index.sort()
-            print(sample_index)
-            return
+            # 2000中取一个batch index [batch_size--self.n_multi_step] 防止数据不够、
+            sample_index = np.random.choice(self.memory_size-self.n_multi_step, batch_size)
+            sample_index = (self.memory_counter+sample_index)%self.memory_size
+            sample_memory = np.array(list(self.memory[sample_index]), dtype=object).transpose()  # [(s a r s) ] -> [(s) (a) (r) (s)]
             #如果刚好sample到最新的数据？要如何处理
             states, actions, rewards, next_states, dones = [], [], [], [], []
             for i in range(batch_size):
@@ -174,8 +170,8 @@ class DuelingDQN(object):
 
 if __name__ == '__main__':
     m = Nstep_Memory(memory_size=10,n_multi_step=2)
-    for i in range(7):
+    for i in range(10):
         m.store_transition((np.array([i, 2, 3, 4]), 10 + i, 100 + i, np.array([10 + i, 8, 9, 10]), True))
-    # print(m.memory)
+    print(m.memory)
     # print("--------------")
     print(m.sample(7))
