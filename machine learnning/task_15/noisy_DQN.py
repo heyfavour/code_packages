@@ -85,17 +85,9 @@ class Net(nn.Module):
             nn.ReLU(),
             self.noisy_layer_out
         )
-
-        # self.linear_layer = nn.Sequential(
-        #     nn.Linear(N_STATES, 10),
-        #     nn.ReLU(),
-        # )
         self.apply(weights_init)
 
     def forward(self, input: torch.Tensor) -> torch.Tensor:
-        # input = self.linear_layer(input)
-        # input = self.noisy_layer_mid(input)
-        # output = self.noisy_layer_out(input)
         output = self.model(input)
         return output
 
