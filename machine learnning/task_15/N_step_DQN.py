@@ -71,6 +71,9 @@ class Memory(object):
                 )  # n_step rewards
                 sample_next_state[index] = next_state[-1]
                 sample_done[index] = done[-1]
+            sample_reward = torch.FloatTensor(sample_reward).view(-1, 1)
+            sample_next_state = torch.FloatTensor(list(sample_next_state))
+            sample_done = torch.FloatTensor(sample_done).view(-1, 1)
         return sample_state, sample_action, sample_reward, sample_next_state, sample_done
 
 
@@ -143,11 +146,7 @@ class NStepDQN():
         self.learn_step_counter = self.learn_step_counter + 1
 
         sample_state, sample_action, sample_reward, sample_next_state, sample_done = self.memory.sample(BATCH_SIZE)
-        sample_state = torch.FloatTensor(sample_state)
-        sample_action = torch.LongTensor(sample_action).view(-1, 1)
-        sample_reward = torch.FloatTensor(sample_reward).view(-1, 1)
-        sample_next_state = torch.FloatTensor(list(sample_next_state))
-        sample_done = torch.FloatTensor(sample_done).view(-1, 1)
+
         q_eval = self.eval_net(sample_state).gather(1, sample_action)  # 去对应的acion的实际output
         q_next = self.target_net(sample_next_state).detach()
         # target = rewards + (1 - dones) * GAMMA * next_pred.max(1)[0]
