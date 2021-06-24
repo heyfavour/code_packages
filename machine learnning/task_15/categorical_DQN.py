@@ -9,7 +9,7 @@ import gym
 import torch.nn.functional as F
 
 # Hyper Parameters
-BATCH_SIZE = 32
+BATCH_SIZE = 4
 LR = 0.001  # learning rate
 EPSILON = 0.9  # greedy policy
 GAMMA = 0.9  # reward discount
@@ -21,10 +21,10 @@ env = env.unwrapped
 N_ACTIONS = env.action_space.n  #
 N_STATES = env.observation_space.shape[0]
 
-ATOMS_NUM = 51
+ATOMS_NUM = 6
 V_MIN = -10
 V_MAX = 10
-
+SUPPORT = torch.linspace(V_MIN,V_MAX,ATOMS_NUM)
 
 class Memory(object):
     # memory buffer to store episodic memory
@@ -62,14 +62,16 @@ class Net(nn.Module):
         )
 
     def forward(self, input):
-        mid = self.model(input)  # [1 2*51]
-        mid = mid.view(-1, ATOMS_NUM)  # [2 51]
-        mid = F.softmax(mid, 1)  # [2 51] 51SUM=1
-        output = mid.view(-1, N_ACTIONS, ATOMS_NUM)
+        distribution = self.dist(input)
+        output = torch.sum(distribution, dim=2)
         return output
 
+    def dist(self, input):  # => [batch action_dim softmax(ATOMS_NUM)]*[分布]
+        distribution = F.softmax(self.model(input).view(-1, N_ACTIONS, ATOMS_NUM), dim=-1) *
+        return distribution
 
-class NStepDQN():
+
+class Categorical_DQN():
     def __init__(self):
         self.epsilon = EPSILON
 
@@ -96,10 +98,8 @@ class NStepDQN():
     def predict_action(self, state):
         state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
         with torch.no_grad():
-            actions_dist = self.eval_net(state).detach()  # [1 2 51]
-            dist = actions_dist*torch.linspace(V_MIN, V_MAX, ATOMS_NUM)#[-10 ... 10]51个均匀分布 [1 2 51]分布
-            # action = dist.sum(2).max(1)[1].detach()[0].item()#torch.
-
+            actions = self.eval_net(state).detach()  # [1 2 51]
+            action = actions.max(1)[1].item()
             return action
 
     # save sample (error,<s,a,r,s'>) to the replay memory
@@ -107,7 +107,30 @@ class NStepDQN():
         # transition = np.hstack((state, [action, reward], next_state))
         self.memory.add((state, action, reward, next_state, done))
 
-    # pick samples from prioritized replay memory (with batch_size)
+    def cal_dist(self, next_state, sample_reward, sample_done):
+        delta_z = (V_MAX - V_MIN) / (ATOMS_NUM - 1)
+        support = torch.linspace(V_MIN, V_MAX, ATOMS_NUM)
+
+        next_dist = self.target_net.dist(next_state).detach()  # [32 2 51] = [BATCH N_ACTION softmax(N_ATOMS)]*[分布]
+        next_action = next_dist.sum(2).max(1)[1].view(-1, 1, 1).expand(BATCH_SIZE, 1, ATOMS_NUM)  # [32]=>[32 1 51]
+        next_dist = next_dist.gather(1, next_action).view(BATCH_SIZE, -1)  # [32 N_ATOMS] 根据action 获取执行action的分布
+        sample_reward = sample_reward.expand_as(next_dist)  # [BATCH r] [BATCH R.. R] ATOMS_NUM个R
+        sample_done = sample_done.expand_as(next_dist)
+        support = support.unsqueeze(0).expand_as(next_dist)  # [BATCH N_ATOMS]
+
+        Tz = (sample_reward + (1 - sample_done) * GAMMA * support).clamp(V_MIN, max=V_MAX)
+        b = (Tz - V_MIN) / delta_z
+        l = b.floor().long()
+        u = b.ceil().long()
+
+        offset = torch.linspace(0, (BATCH_SIZE - 1) * ATOMS_NUM, BATCH_SIZE).long().unsqueeze(1).expand(BATCH_SIZE,
+                                                                                                        ATOMS_NUM)
+
+        dist = torch.zeros(next_dist.size())
+        dist.view(-1).index_add_(0, (l + offset).view(-1), (next_dist * (u.float() - b)).view(-1))
+        dist.view(-1).index_add_(0, (u + offset).view(-1), (next_dist * (b - l.float())).view(-1))
+        return dist
+
     def learn(self):
         # step 1  每N步更新一次target_net
         if self.learn_step_counter % TARGET_REPLACE_ITER == 0: self.update_target_model()
@@ -115,14 +138,14 @@ class NStepDQN():
 
         sample_state, sample_action, sample_reward, sample_next_state, sample_done = self.memory.sample(BATCH_SIZE)
 
-        q_eval = self.eval_net(sample_state).gather(1, sample_action)  # 去对应的acion的实际output
-        q_next = self.target_net(sample_next_state).detach()
-        # target = rewards + (1 - dones) * GAMMA * next_pred.max(1)[0]
-        q_target = sample_reward + (1 - sample_done) * (GAMMA ** self.memory.n_multi_step) * q_next.max(1)[0].view(
-            BATCH_SIZE, 1)
+        target_dist = self.cal_dist(sample_next_state, sample_reward, sample_done)
+
+        eval_action = sample_action.view(-1, 1, 1).expand(-1, 1, ATOMS_NUM)  # [BATCH 1 ATOMS_NUM]
+        eval_dist = self.eval_net.dist(sample_state).gather(1, eval_action).squeeze(1)
+        eval_dist.data.clamp_(0.01, 0.99)
+        loss = -(target_dist * eval_dist.log()).sum(1).mean()
 
         self.optimizer.zero_grad()
-        loss = self.loss_func(q_eval, q_target)
         loss.backward()
         self.optimizer.step()
 
@@ -136,7 +159,7 @@ def modify_reward(state):
 
 
 if __name__ == "__main__":
-    agent = NStepDQN()
+    agent = Categorical_DQN()
     for epoch in range(400):
         state = env.reset()
         epoch_rewards = 0
@@ -144,7 +167,7 @@ if __name__ == "__main__":
             # env.render()
             action = agent.choose_action(state)
             next_state, reward, done, info = env.step(action)
-            # reward = modify_reward(next_state)
+            reward = modify_reward(next_state)
             agent.store_transition(state, action, reward, next_state, done)
             state = next_state
 
