@@ -1,5 +1,5 @@
 """
-忽然感觉把memery拆出来真的香
+对累积回报这个随机变量的分布 Z(x,a) 进行建模，而非只建模其期望。
 """
 import torch
 import torch.nn as nn
@@ -9,7 +9,7 @@ import gym
 import torch.nn.functional as F
 
 # Hyper Parameters
-BATCH_SIZE = 4
+BATCH_SIZE = 32
 LR = 0.001  # learning rate
 EPSILON = 0.9  # greedy policy
 GAMMA = 0.9  # reward discount
@@ -21,10 +21,11 @@ env = env.unwrapped
 N_ACTIONS = env.action_space.n  #
 N_STATES = env.observation_space.shape[0]
 
-ATOMS_NUM = 6
+ATOMS_NUM = 51
 V_MIN = -10
 V_MAX = 10
-SUPPORT = torch.linspace(V_MIN,V_MAX,ATOMS_NUM)
+SUPPORT = torch.linspace(V_MIN, V_MAX, ATOMS_NUM)
+
 
 class Memory(object):
     # memory buffer to store episodic memory
@@ -62,12 +63,12 @@ class Net(nn.Module):
         )
 
     def forward(self, input):
-        distribution = self.dist(input)
+        distribution = self.dist(input) * SUPPORT
         output = torch.sum(distribution, dim=2)
         return output
 
     def dist(self, input):  # => [batch action_dim softmax(ATOMS_NUM)]*[分布]
-        distribution = F.softmax(self.model(input).view(-1, N_ACTIONS, ATOMS_NUM), dim=-1) *
+        distribution = F.softmax(self.model(input).view(-1, N_ACTIONS, ATOMS_NUM), dim=-1)
         return distribution
 
 
@@ -111,10 +112,11 @@ class Categorical_DQN():
         delta_z = (V_MAX - V_MIN) / (ATOMS_NUM - 1)
         support = torch.linspace(V_MIN, V_MAX, ATOMS_NUM)
 
-        next_dist = self.target_net.dist(next_state).detach()  # [32 2 51] = [BATCH N_ACTION softmax(N_ATOMS)]*[分布]
+        next_dist = self.target_net.dist(next_state).detach()*SUPPORT  # [32 2 51] = [BATCH N_ACTION softmax(N_ATOMS)]*[分布]
         next_action = next_dist.sum(2).max(1)[1].view(-1, 1, 1).expand(BATCH_SIZE, 1, ATOMS_NUM)  # [32]=>[32 1 51]
         next_dist = next_dist.gather(1, next_action).view(BATCH_SIZE, -1)  # [32 N_ATOMS] 根据action 获取执行action的分布
-        sample_reward = sample_reward.expand_as(next_dist)  # [BATCH r] [BATCH R.. R] ATOMS_NUM个R
+
+        sample_reward = sample_reward.expand_as(next_dist)  # [BATCH N_ATOMS] [BATCH R.. R] ATOMS_NUM个R
         sample_done = sample_done.expand_as(next_dist)
         support = support.unsqueeze(0).expand_as(next_dist)  # [BATCH N_ATOMS]
 
@@ -123,8 +125,8 @@ class Categorical_DQN():
         l = b.floor().long()
         u = b.ceil().long()
 
-        offset = torch.linspace(0, (BATCH_SIZE - 1) * ATOMS_NUM, BATCH_SIZE).long().unsqueeze(1).expand(BATCH_SIZE,
-                                                                                                        ATOMS_NUM)
+        offset = torch.linspace(0, (BATCH_SIZE - 1) * ATOMS_NUM, BATCH_SIZE
+                                ).long().unsqueeze(1).expand(BATCH_SIZE,ATOMS_NUM)
 
         dist = torch.zeros(next_dist.size())
         dist.view(-1).index_add_(0, (l + offset).view(-1), (next_dist * (u.float() - b)).view(-1))
@@ -143,7 +145,7 @@ class Categorical_DQN():
         eval_action = sample_action.view(-1, 1, 1).expand(-1, 1, ATOMS_NUM)  # [BATCH 1 ATOMS_NUM]
         eval_dist = self.eval_net.dist(sample_state).gather(1, eval_action).squeeze(1)
         eval_dist.data.clamp_(0.01, 0.99)
-        loss = -(target_dist * eval_dist.log()).sum(1).mean()
+        loss = -(target_dist * eval_dist.log()).sum(1).mean()  # Wasserstein  lnp*Reward
 
         self.optimizer.zero_grad()
         loss.backward()
