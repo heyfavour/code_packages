@@ -1,7 +1,11 @@
 """
 RAINBOW 7种混合
 1.DDQN
-2.duelingDQN 加入后收敛效果变慢
+2.duelingDQN
+3.noisy dqn 参数越来越小 但是也能保持较好的结果
+4.categorical dqn
+5.N-step
+6.PER
 """
 import gym
 import torch
@@ -10,7 +14,8 @@ import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 
-# 定义参数
+from collections import deque
+
 BATCH_SIZE = 128  # 每一批的训练量
 LR = 0.001  # 学习率
 GAMMA = 0.9  # reward discount
@@ -28,145 +33,97 @@ V_MIN = -10
 V_MAX = 10
 SUPPORT = torch.linspace(V_MIN, V_MAX, ATOMS_NUM)
 
-class Memory(object):
-    # memory buffer to store episodic memory
-    def __init__(self, memory_size=MEMORY_CAPACITY):
-        self.memory = np.zeros(memory_size, dtype=object)
-        self.memory_size = memory_size
-        self.memory_counter = 0
 
-    def add(self, transition):  # data = (state, action, reward, next_state, done) 4 1 1 4 1
-        index = self.memory_counter % self.memory_size
-        self.memory[index] = transition
-        self.memory_counter = self.memory_counter + 1
+class SumTree:  # p越大，越容易sample到
+    wirte = 0  # 此时写入的位置
 
-    def sample(self, batch_size=BATCH_SIZE):
-        sample_index = np.random.choice(self.memory_size, batch_size)  # 2000中取一个batch index [batch_size]
-        # [(s a r s) ] -> [(s) (a) (r) (s)]
-        sample_memory = np.array(list(self.memory[sample_index]), dtype=object).transpose()
-        sample_state = torch.FloatTensor(np.vstack(sample_memory[0]))
-        sample_action = torch.LongTensor(list(sample_memory[1])).view(-1, 1)
-        sample_reward = torch.FloatTensor(list(sample_memory[2])).view(-1, 1)
-        sample_next_state = torch.FloatTensor(np.vstack(sample_memory[3]))
-        sample_done = torch.FloatTensor(sample_memory[4].astype(int)).view(-1, 1)
-        return sample_state, sample_action, sample_reward, sample_next_state, sample_done
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.tree = np.zeros(2 * capacity - 1)
+        self.data = np.zeros(capacity, dtype=object)
+        self.length = 0
 
+    def _propagate(self, idx, change):  # 递归将变化更新到parent_node
+        parent = (idx - 1) // 2
+        self.tree[parent] = self.tree[parent] + change  # 将变化写入父节点
+        if parent != 0: self._propagate(parent, change)  # p值更新后，其上面的父节点也都要更新
 
-def weights_init(m):
-    classname = m.__class__.__name__
-    if classname == "Linear":
-        m.weight.data.normal_(0.0, 0.1)
-        m.bias.data.fill_(0)
+    def update(self, idx, p):
+        change = p - self.tree[idx]  # 当前p-原来存的p
+        self.tree[idx] = p  # 节点写入新的p
+        self._propagate(idx, change)
 
-class Net(nn.Module):
-    def __init__(self, ):
-        super().__init__()
-        self.model = nn.Sequential(
-            nn.Linear(N_STATES, 50),
-            nn.ReLU(),
-            nn.Linear(50, 50),  # 2层隐藏层以后效果更好 一层时，到200d多epoch才收敛
-            nn.ReLU(),
-            nn.Linear(50, N_ACTIONS),
-            # nn.Softmax(dim=-1), 如果加了很难收敛
-        )
-        # self.apply(weights_init)  # initialization
+    def add(self, p, data):  # p sample的概率，也是error的大小 data state 需要储存的数据
+        idx = self.wirte + self.capacity - 1  # idx=>tree.idx
 
-    def forward(self, input):
-        output = self.model(input)
-        return output
+        self.data[self.wirte] = data
+        self.update(idx, p)
 
+        self.wirte = self.wirte + 1
+        if self.wirte >= self.capacity: self.wirte = 0  # 叶结点存满了就从头开始覆写
+        if self.length < self.capacity: self.length = self.length + 1
 
-class Agent():
-    def __init__(self):
-        self.epsilon = 0.5
-        self.epsilon_max = 0.95
-        self.epsilon_step = 5000
-        self.epsilon_decay = (self.epsilon_max - self.epsilon) / self.epsilon_step
+    # find sample on leaf node
+    def _retrieve(self, idx, sample):  ## 检索s值
+        left = 2 * idx + 1
+        right = left + 1
+        if left >= len(self.tree): return idx  ## 说明已经超过叶结点了 返回传入的idx len(tree)=2 * capacity - 1
+        if sample <= self.tree[left]:  # 比左边小 传到左
+            return self._retrieve(left, sample)  # 递归调用
+        else:  # 比左边大，sample-p
+            return self._retrieve(right, sample - self.tree[left])
 
-        self.memory = Memory(MEMORY_CAPACITY)
-        self.eval_net, self.target_net = Net(), Net()
-        self.optimizer = torch.optim.AdamW(self.eval_net.parameters(), lr=LR)
+    def get(self, sample):
+        idx = self._retrieve(0, sample)
+        dataIdx = idx - self.capacity + 1
+        return (idx, self.tree[idx], self.data[dataIdx])  # idx p (s a r s)
 
-        self.learn_step_counter = 0
-        self.update_target_model()
-        self.loss_func = nn.MSELoss()
-
-    def update_target_model(self):
-        self.target_net.load_state_dict(self.eval_net.state_dict())
-
-    def choose_action(self, state):
-        if np.random.uniform() < self.epsilon:  # 贪婪策略
-            action = self.predict_action(state)
-        else:
-            action = np.random.randint(0, N_ACTIONS)  # 随机产生一个action
-        return action
-
-    def predict_action(self, state):
-        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
-        with torch.no_grad():
-            actions_value = self.eval_net(state)  # [1 2]
-            action = actions_value.max(1)[1].item()
-            return action
-
-    def store_transition(self, state, action, reward, next_state, done):
-        self.memory.add((state, action, reward, next_state, done))
-
-    def learn(self):
-        if self.epsilon < self.epsilon_max: self.epsilon = self.epsilon + self.epsilon_decay
-        if self.learn_step_counter % TARGET_REPLACE_ITER == 0: self.update_target_model()
-        self.learn_step_counter = self.learn_step_counter + 1
-
-        sample_state, sample_action, sample_reward, sample_next_state, sample_done = self.memory.sample(BATCH_SIZE)
-
-        q_eval = self.eval_net(sample_state).gather(1, sample_action)
-        q_next = self.target_net(sample_next_state).detach()
-        q_target = sample_reward + (1 - sample_done) *GAMMA * q_next.max(1)[0].view(BATCH_SIZE, 1)  # shape (batch, 1) TD MC?
-
-        loss = self.loss_func(q_eval, q_target)
-
-        self.optimizer.zero_grad()
-        loss.backward()
-        self.optimizer.step()
+    def total(self):
+        return self.tree[0]
 
 
-# modify the reward 如果不重定义分数，相当难收敛
-def modify_reward(state):
-    x, x_dot, theta, theta_dot = state  # (位置x，x加速度, 偏移角度theta, 角加速度)
-    r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
-    r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
-    reward = r1 + r2
-    return reward
+class PERMemery():
+    alpha = 0.9  # [0~1] Importance Sampling.alpha=0 退化为均匀采样
+    epsilon = 0.01  # small amount to avoid zero priority
+    beta = 0.4
+    beta_increment_per_sampling = 0.001
+    clip_error = 1.  # clipped abs error
 
-def same_seeds(seed):
-    # 每次运行网络的时候相同输入的输出是固定的
-    torch.manual_seed(seed)  # 初始化种子保持一致
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed(seed)
-        torch.cuda.manual_seed_all(seed)  # if you are using multi-GPU.
-    np.random.seed(seed)  # Numpy module.初始化种子保持一致
-    random.seed(seed)  # Python random module. 初始化种子保持一致
-    # 内置的 cuDNN 的 auto-tuner 自动寻找最适合当前配置的高效算法
-    # 如果网络的输入数据在每次 iteration 都变化的话，会导致 cnDNN 每次都会去寻找一遍最优配置，这样反而会降低运行效率。
-    torch.backends.cudnn.benchmark = False
-    # 将这个 flag 置为True的话，每次返回的卷积算法将是确定的，即默认算法
-    torch.backends.cudnn.deterministic = True
+    def __init__(self, capacity=MEMORY_CAPACITY, n_step=2):
+        self.tree = SumTree(capacity)
+        self.buffer = deque(maxlen=n_step)
+        self.n_step = n_step
 
-if __name__ == "__main__":
-    same_seeds(0)
-    agent = Agent()
-    for epoch in range(400):
-        state = env.reset()
-        epoch_rewards = 0
-        while True:
-            action = agent.choose_action(state)
-            next_state, reward, done, info = env.step(action)
-            reward = modify_reward(next_state)
-            agent.store_transition(state, action, reward, next_state, done)
-            state = next_state
+    def get_n_step(self):  # [s a r s a]
+        sum_rewards = 0
+        for i in range(self.n_step):  # 其他进入的
+            (action, state, reward, next_state, done) = self.buffer[i]
+            sum_rewards = sum_rewards + (GAMMA ** i) * reward * (1 - done)
+            if done: break
+        return (self.buffer[0], self.buffer[1], sum_rewards, next_state, done)
 
-            epoch_rewards = epoch_rewards + reward
-            if agent.memory.memory_counter >= MEMORY_CAPACITY:
-                agent.learn()
-                if done: print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}')
-            if done:break
-            state = next_state
+    def add(self, transition):  # 新增的永远优先
+        self.buffer.append(transition)
+        if len(self.buffer) < self.n_step: return
+        transition = self.get_n_step()
+        p = np.max(self.tree.tree[-self.tree.capacity:])
+        if p == 0: p = self.clip_error  # 刚开始时没数据max_p=0
+        self.tree.add(p, transition)
+
+    def sample(self, num):
+        batch, idxs, priorities, segment = [], [], [], self.tree.total() / num
+        self.beta = np.min([1., self.beta + self.beta_increment_per_sampling])  # 0.4 + 0.01->1
+        for i in range(num):
+            sample = random.uniform(segment * i, segment * (i + 1))
+            (idx, p, data) = self.tree.get(sample)
+            priorities.append(p)
+            batch.append(data)
+            idxs.append(idx)
+        sampling_probabilities = priorities / self.tree.total()
+        is_weight = np.power(self.tree.length * sampling_probabilities, -self.beta)  # (2000*p/p_sum)^-a MF （p/min_p)^-a
+        is_weight = is_weight / is_weight.max()  #
+        return batch, idxs, is_weight  # ISWeight = (N*Pj)^(-beta) / maxi_wi
+
+
+if __name__ == '__main__':
+    m = PERMemery()
