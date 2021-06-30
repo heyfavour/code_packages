@@ -5,8 +5,10 @@ RAINBOW 7种混合
 3.noisy dqn 参数越来越小 但是也能保持较好的结果
 4.categorical dqn
 5.N-step
-6.PER
+6.PER 网络上都没有看到让人很好理解得计算p和categorical dqn相结合得案例，所以这部分是自己写的
 """
+import time
+
 import gym
 import torch
 import random
@@ -100,7 +102,7 @@ class PERMemery():
             (action, state, reward, next_state, done) = self.buffer[i]
             sum_rewards = sum_rewards + (GAMMA ** i) * reward * (1 - done)
             if done: break
-        return (self.buffer[0], self.buffer[1], sum_rewards, next_state, done)
+        return (self.buffer[0][0], self.buffer[0][1], sum_rewards, next_state, done)
 
     def add(self, transition):  # 新增的永远优先
         self.buffer.append(transition)
@@ -121,9 +123,232 @@ class PERMemery():
             idxs.append(idx)
         sampling_probabilities = priorities / self.tree.total()
         is_weight = np.power(self.tree.length * sampling_probabilities, -self.beta)  # (2000*p/p_sum)^-a MF （p/min_p)^-a
-        is_weight = is_weight / is_weight.max()  #
+        is_weight = torch.FloatTensor(is_weight / is_weight.max()).view(-1, 1)
         return batch, idxs, is_weight  # ISWeight = (N*Pj)^(-beta) / maxi_wi
+
+    def _get_priority(self, error):  # p的范围在[epsilon,clip_error]
+        error = np.abs(error) + self.epsilon  # convert to abs and avoid 0
+        clip_error = np.minimum(error, self.clip_error)
+        return clip_error ** self.alpha  # error越大p越大 但是p有上线
+
+    def update(self, idx, error):
+        p = self._get_priority(error)
+        self.tree.update(idx, p)
+
+    def update_batch(self, idxs, error):
+        for i, id in enumerate(idxs):
+            self.update(id, error[i])
+
+    def __len__(self):
+        return self.tree.length
+
+
+class Memory(object):
+    # memory buffer to store episodic memory
+    def __init__(self, memory_size=MEMORY_CAPACITY, n_step=2):
+        self.memory = np.zeros(memory_size, dtype=object)
+        self.memory_size = memory_size
+        self.memory_counter = 0
+        self.n_step = n_step
+
+    def add(self, transition):  # data = (state, action, reward, next_state, done) 4 1 1 4 1
+        index = self.memory_counter % self.memory_size
+        self.memory[index] = transition
+        self.memory_counter = self.memory_counter + 1
+
+    def sample(self, batch_size=BATCH_SIZE):
+        sample_index = np.random.choice(self.memory_size, batch_size)  # 2000中取一个batch index [batch_size]
+        # [(s a r s) ] -> [(s) (a) (r) (s)]
+        sample_memory = np.array(list(self.memory[sample_index]), dtype=object).transpose()
+        sample_state = torch.FloatTensor(np.vstack(sample_memory[0]))
+        sample_action = torch.LongTensor(list(sample_memory[1])).view(-1, 1)
+        sample_reward = torch.FloatTensor(list(sample_memory[2])).view(-1, 1)
+        sample_next_state = torch.FloatTensor(np.vstack(sample_memory[3]))
+        sample_done = torch.FloatTensor(sample_memory[4].astype(int)).view(-1, 1)
+        return sample_state, sample_action, sample_reward, sample_next_state, sample_done
+
+    def __len__(self):
+        return min(self.memory_counter, MEMORY_CAPACITY)
+
+
+from noisy_DQN import NoisyLinear  # noisy_dqn
+
+
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname == "Linear":
+        m.weight.data.normal_(0.0, 0.1)
+        m.bias.data.fill_(0)
+
+
+class Net(nn.Module):
+    def __init__(self, ):
+        super().__init__()
+        self.v_noisy_layer_mid = NoisyLinear(128, 128)
+        self.v_noisy_layer_out = NoisyLinear(128, ATOMS_NUM)
+
+        self.q_noisy_layer_mid = NoisyLinear(128, 128)
+        self.q_noisy_layer_out = NoisyLinear(128, N_ACTIONS * ATOMS_NUM)
+
+        self.pre_model = nn.Sequential(
+            nn.Linear(N_STATES, 128),
+            nn.ReLU(),
+        )
+        self.apply(weights_init)  # initialization
+
+    def forward(self, input):
+        distribution = self.dist(input) * SUPPORT
+        output = torch.sum(distribution, dim=2)
+        return output
+
+    def dist(self, input):
+        mid = self.pre_model(input)
+        v = self.v_noisy_layer_out(F.relu(self.v_noisy_layer_mid(mid))).view(-1, 1, ATOMS_NUM)  # 环境的价值
+        q = self.q_noisy_layer_out(F.relu(self.q_noisy_layer_mid(mid))).view(-1, N_ACTIONS, ATOMS_NUM)  # 动作的价值
+        output = v + (q - q.mean(dim=1, keepdim=True))  # [BATCH N_ACTIONS ATOMS_NUM]
+        distribution = F.softmax(output, dim=-1)
+        return distribution
+
+    def reset_noise(self):
+        self.v_noisy_layer_mid.reset_noise()
+        self.v_noisy_layer_out.reset_noise()
+        self.q_noisy_layer_mid.reset_noise()
+        self.q_noisy_layer_out.reset_noise()
+
+
+class Agent():
+    def __init__(self):
+        self.memory = PERMemery(MEMORY_CAPACITY, 2)
+        self.eval_net, self.target_net = Net(), Net()
+        self.optimizer = torch.optim.AdamW(self.eval_net.parameters(), lr=LR)
+
+        self.learn_step_counter = 0
+        self.update_target_model()
+
+    def update_target_model(self):
+        self.target_net.load_state_dict(self.eval_net.state_dict())
+
+    def choose_action(self, state):  # 使用noisy以后总是贪婪的使用noisy选取的动作 不再需要epsilon
+        action = self.predict_action(state)
+        return action
+
+    def predict_action(self, state):
+        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
+        with torch.no_grad():
+            actions_value = self.eval_net(state)  # [1 2]
+            action = actions_value.max(1)[1].item()
+            return action
+
+    def store_transition(self, state, action, reward, next_state, done):
+        self.memory.add((state, action, reward, next_state, done))
+
+    def cal_dist(self, next_state, sample_reward, sample_done):
+        delta_z = (V_MAX - V_MIN) / (ATOMS_NUM - 1)
+        next_dist = self.target_net.dist(
+            next_state).detach() * SUPPORT  # [32 2 51] = [BATCH N_ACTION softmax(N_ATOMS)]*[分布]
+        next_action = next_dist.sum(2).max(1)[1].view(-1, 1, 1).expand(BATCH_SIZE, 1, ATOMS_NUM)  # [32]=>[32 1 51]
+        next_dist = next_dist.gather(1, next_action).view(BATCH_SIZE, -1)  # [32 N_ATOMS] 根据action 获取执行action的分布
+        sample_reward = sample_reward.expand_as(next_dist)  # [BATCH N_ATOMS] [BATCH R.. R] ATOMS_NUM个R
+        sample_done = sample_done.expand_as(next_dist)
+        support = SUPPORT.unsqueeze(0).expand_as(next_dist)  # [BATCH N_ATOMS]
+        Tz = (sample_reward + (1 - sample_done) * (GAMMA ** self.memory.n_step) * support).clamp(min=V_MIN, max=V_MAX)
+        b = (Tz - V_MIN) / delta_z
+        l = b.floor().long()
+        u = b.ceil().long()
+
+        offset = torch.linspace(0, (BATCH_SIZE - 1) * ATOMS_NUM, BATCH_SIZE).long().unsqueeze(1).expand(BATCH_SIZE,
+                                                                                                        ATOMS_NUM)
+
+        dist = torch.zeros(next_dist.size())
+        dist.view(-1).index_add_(0, (l + offset).view(-1), (next_dist * (u.float() - b)).view(-1))
+        dist.view(-1).index_add_(0, (u + offset).view(-1), (next_dist * (b - l.float())).view(-1))
+        return dist
+
+    def _compute_loss(self, batch):
+        batch = np.array(batch, dtype=object).transpose()
+        sample_state = torch.FloatTensor(np.vstack(batch[0]))
+        sample_action = torch.LongTensor(list(batch[1])).view(-1, 1)
+        sample_reward = torch.FloatTensor(list(batch[2])).view(-1, 1)
+        sample_next_state = torch.FloatTensor(np.vstack(batch[3]))
+        sample_done = torch.FloatTensor(batch[4].astype(int)).view(-1, 1)
+        target_dist = self.cal_dist(sample_next_state, sample_reward, sample_done)
+
+        eval_action = sample_action.view(-1, 1, 1).expand(-1, 1, ATOMS_NUM)  # [BATCH 1 ATOMS_NUM]
+        eval_dist = self.eval_net.dist(sample_state).gather(1, eval_action).squeeze(1)
+
+        eval_dist.data.clamp_(0.01, 0.99)
+        loss = -(target_dist * eval_dist.log()).sum(1)
+        error = torch.mean(abs(eval_dist - target_dist),dim=1).data.numpy()
+        # error = -(target_dist * eval_dist.log()).sum(1).mean()
+        return loss, error  # Wasserstein  lnp*Reward
+
+    def learn(self):
+        if self.learn_step_counter % TARGET_REPLACE_ITER == 0: self.update_target_model()
+        self.learn_step_counter = self.learn_step_counter + 1
+
+        batch, idxs, is_weight = self.memory.sample(BATCH_SIZE)  # PER
+        loss, error = self._compute_loss(batch)
+        loss = torch.mean(is_weight * loss)
+        agent.loss.append(loss.item())
+        self.memory.update_batch(idxs, error)  # PER: update priority
+        self.optimizer.zero_grad()
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.eval_net.parameters(), 10)  # 防止梯度爆炸
+        self.optimizer.step()
+
+    def reset_noise(self, ):
+        self.eval_net.reset_noise()
+        self.update_target_model()
+
+
+def modify_reward(state):
+    x, x_dot, theta, theta_dot = state  # (位置x，x加速度, 偏移角度theta, 角加速度)
+    r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
+    r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
+    reward = r1 + r2
+    return reward
+
+
+def plot(rewards, loss):
+    import matplotlib.pyplot as plt
+    plt.clf()
+    plt.figure(figsize=(20, 5))
+    plt.subplot(131)
+    plt.title('rewards')
+
+    plt.plot(rewards)
+
+    plt.title('loss')
+    plt.subplot(132)
+    plt.plot(loss)
+    plt.show()
 
 
 if __name__ == '__main__':
-    m = PERMemery()
+    agent = Agent()
+    agent.epoch_rewards = []
+    agent.loss = []
+    for epoch in range(20000):
+        state = env.reset()
+        epoch_rewards = 0
+        while True:
+            # env.render()
+            action = agent.choose_action(state)
+            next_state, reward, done, info = env.step(action)
+            reward = modify_reward(next_state)
+            agent.store_transition(state, action, reward, next_state, done)
+            state = next_state
+            epoch_rewards = epoch_rewards + reward
+            if len(agent.memory) >= MEMORY_CAPACITY:
+                agent.learn()
+                if done:
+                    print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}| Tree Mean {agent.memory.tree.tree[-MEMORY_CAPACITY:].mean()}')
+                    print(agent.memory.tree.tree[-MEMORY_CAPACITY:].max())
+                    print(agent.memory.tree.tree[-MEMORY_CAPACITY:])
+            if done:
+                break
+            state = next_state
+        agent.reset_noise()
+        agent.epoch_rewards.append(epoch_rewards)
+
+        if epoch % 5 == 0 and len(agent.memory) >= MEMORY_CAPACITY:plot(agent.epoch_rewards, agent.loss)
