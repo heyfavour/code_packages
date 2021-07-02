@@ -343,12 +343,10 @@ if __name__ == '__main__':
                 agent.learn()
                 if done:
                     print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}| Tree Mean {agent.memory.tree.tree[-MEMORY_CAPACITY:].mean()}')
-                    print(agent.memory.tree.tree[-MEMORY_CAPACITY:].max())
-                    print(agent.memory.tree.tree[-MEMORY_CAPACITY:])
             if done:
                 break
             state = next_state
         agent.reset_noise()
         agent.epoch_rewards.append(epoch_rewards)
 
-        if epoch % 5 == 0 and len(agent.memory) >= MEMORY_CAPACITY:plot(agent.epoch_rewards, agent.loss)
+        #if epoch % 5 == 0 and len(agent.memory) >= MEMORY_CAPACITY:plot(agent.epoch_rewards, agent.loss)
