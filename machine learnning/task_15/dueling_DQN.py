@@ -7,12 +7,12 @@ import numpy as np
 import gym
 
 # Hyper Parameters
-BATCH_SIZE = 32
-LR = 0.001  # learning rate
+BATCH_SIZE = 128
+LR = 0.0005  # learning rate
 EPSILON = 0.9  # greedy policy
 GAMMA = 0.9  # reward discount
 TARGET_REPLACE_ITER = 100  # target update frequency
-MEMORY_CAPACITY = 1000
+MEMORY_CAPACITY = 5000
 # env = gym.make('Pendulum-v0')
 env = gym.make('CartPole-v0')
 env = env.unwrapped
@@ -28,19 +28,21 @@ def weights_init(m):
 class Net(nn.Module):
     def __init__(self, ):
         super().__init__()
+        self.pre_model = nn.Sequential(nn.Linear(N_STATES, 50))
         self.v_layers = nn.Sequential(
-            nn.Linear(N_STATES, 10),
+            nn.Linear(50, 50),
             nn.ReLU(),
-            nn.Linear(10, 1),
+            nn.Linear(50, 1),
         )
         self.q_layers = nn.Sequential(
-            nn.Linear(N_STATES, 10),
+            nn.Linear(50, 50),
             nn.ReLU(),
-            nn.Linear(10, N_ACTIONS),
+            nn.Linear(50, N_ACTIONS),
         )
         self.apply(weights_init)  # initialization
 
     def forward(self, input):
+        input = self.pre_model(input)
         v = self.v_layers(input)  # 环境的价值
         q = self.q_layers(input)  # 动作的价值
         # actions_value = v.expand_as(q) + (q - q.mean(dim=1,keepdim=True).expand_as(q)) 等同与下方
@@ -106,6 +108,14 @@ class DuelingDQN(object):
         self.optimizer.step()
 
 
+def modify_reward(state):
+    x, x_dot, theta, theta_dot = state  # (位置x，x加速度, 偏移角度theta, 角加速度)
+    r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
+    r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
+    reward = r1 + r2
+    return reward
+
+
 if __name__ == '__main__':
     dqn = DuelingDQN()
     for epoch in range(500):
@@ -115,10 +125,7 @@ if __name__ == '__main__':
             # env.render()
             action = dqn.choose_action(state)
             next_state, reward, done, info = env.step(action)
-            x, x_dot, theta, theta_dot = next_state  # (位置x，x加速度, 偏移角度theta, 角加速度)
-            r1 = (env.x_threshold - abs(x)) / env.x_threshold - 0.8
-            r2 = (env.theta_threshold_radians - abs(theta)) / env.theta_threshold_radians - 0.5
-            reward = r1 + r2
+            reward = modify_reward(next_state)
             epoch_rewards = epoch_rewards + reward
             dqn.store_transition(state, action, reward, next_state)
             if dqn.memory_counter > MEMORY_CAPACITY:
@@ -127,7 +134,6 @@ if __name__ == '__main__':
             if done:
                 break
             state = next_state
-        if epoch_rewards > 500: break
 
     dqn.eval_net.eval()
     with torch.no_grad():
