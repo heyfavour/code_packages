@@ -17,7 +17,6 @@ env = gym.make("CartPole-v0")
 env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
 N_ACTIONS = env.action_space.n  # 2 2个动作
 N_STATES = env.observation_space.shape[0]  # 4 state的维度
-GAMMA = 0.99
 
 
 class Actor(nn.Module):
@@ -55,41 +54,42 @@ class Critic(nn.Module):
 
 
 class PPOMemory:
-    def __init__(self, memery_size, batch_step):
-        self.memory = np.zeros(memery_size, dtype=object)
-        self.memory_size = memery_size
-        self.batch_step = batch_step
-
+    def __init__(self, batch_size, batch_num):
+        self.batch_size = batch_size
+        self.batch_num = batch_num
+        self.memory_size = batch_size * batch_num
+        self.memory = np.zeros(self.memory_size, dtype=object)
         self.memory_counter = 0
 
-    def add(self, transition):  # (state, action, reward, done, prob, critic)
+    def add(self, state, action, prob, critic, reward, done):
+        # [0.02438012 0.01726248 0.10023742 0.3512741 ] 0 -1.1162703037261963 17.281251907348633 1.0 False
+        transition = (state, action, prob, critic, reward, done)
         index = self.memory_counter % self.memory_size
         self.memory[index] = transition
         self.memory_counter = self.memory_counter + 1
 
     def sample(self):
-        # 每100步算一个epoch 每一个epoch更新memory_size/batch_step 次
-        min_batch_range = np.arange(0, self.memory_size, self.batch_step)
+        range = np.arange(0, self.memory_size, self.batch_size)
         indices = np.arange(self.memory_size, dtype=np.int64)
         np.random.shuffle(indices)
-        batch_index = [indices[i:i + self.batch_step] for i in min_batch_range]
+        batch_index = [indices[i:i + self.batch_size] for i in range]
         return batch_index
 
-    def data(self):  # (state, action, reward, done, prob, critic)
+    def data(self):  # (state, action, prob, critic, reward, done)
         memory = np.array(list(self.memory), dtype=object).transpose()
         state = torch.FloatTensor(np.vstack(memory[0]))
-        action = torch.LongTensor(list(memory[1])).view(-1, 1)
-        reward = torch.FloatTensor(list(memory[2])).view(-1, 1)
-        done = torch.FloatTensor(memory[4].astype(int)).view(-1, 1)
-        prob = torch.FloatTensor(list(memory[5])).view(-1, 1)
-        critic = torch.FloatTensor(list(memory[6])).view(-1, 1)
-        return state, action, reward, done, prob, critic
+        action = torch.LongTensor(list(memory[1])).view(-1)
+        prob = torch.FloatTensor(list(memory[2])).view(-1)
+        critic = torch.FloatTensor(list(memory[3])).view(-1)
+        reward = torch.FloatTensor(list(memory[4])).view(-1)
+        done = torch.FloatTensor(memory[5].astype(int)).view(-1)
+        return state, action, prob, critic, reward, done
 
 
 class PPO():
     def __init__(self):
         self.policy_clip = 0.2
-        self.epoch = 5
+        self.gamma = 0.9
         self.gae_lambda = 0.95
         self.actor = Actor()
         self.actor_optimizer = optim.AdamW(self.actor.parameters(), lr=0.0005)
@@ -97,82 +97,68 @@ class PPO():
         self.critic = Critic()
         self.critic_optimizer = optim.AdamW(self.critic.parameters(), lr=0.0005)
 
-        self.memory_size = 100
-        self.batch_step = 10#每个batch多少步
-        self.memory = PPOMemory(self.memory_size, self.batch_step)
+        self.batch_size = 20
+        self.batch_num = 4
+        self.memory = PPOMemory(self.batch_size, self.batch_num)
 
-    def choose_action(self, state):
-        state = torch.unsqueeze(torch.FloatTensor(state), 0)  # [4]=>[1 4]
+
+    def choose_action(self, observation):
+        state = torch.unsqueeze(torch.FloatTensor(observation), 0)  # [4]=>[1 4]
         with torch.no_grad():
-            state = torch.FloatTensor(state)
-            # action
-            action_dist = self.actor(state)
-            action = action_dist.sample()
-            action_prob = action_dist.log_prob(action)
-            # value
-            critic = self.critic(state)
-        return action.item(), action_prob.item(), critic.item()
+            dist = self.actor(state)
+            value = self.critic(state)
+            action = dist.sample()
+            probs = dist.log_prob(action)
+        return action.item(), probs.item(), value.item()
 
-    def compute_advantage(self, reward, critic, done):  # GAE方法获取returns
-        advantage = np.zeros(self.memory.memory_size, dtype=np.float32)  # [batch_size]
-        for i in range(self.memory.memory_size - 1):#[0 1 2 3 4 5 6 7 8 9]
-            discount, returns = 1, 0
-            for step in range(i, self.memory.memory_size - 1):#[0 1 2 3 4 5 6 7 8 9]
-                # Q = Q + d*(R[STEP] + G*V[STEP+1]*(1-D) - V[K])
-                delta = reward[step] + GAMMA * critic[step + 1] * (1 - done[step]) - critic[step]
-                returns = returns + discount * delta
-                discount = discount * GAMMA * self.gae_lambda  # D*0.99*0.95
-            advantage[i] = returns#return = return + (G*GAE)^n*DELTA
+    def compute_advantage(self, reward, values, dones):
+        advantage_len = self.memory.memory_size
+        advantage = np.zeros(advantage_len, dtype=np.float32)
+        for t in range(advantage_len - 1):
+            discount = 1
+            adv = 0
+            for k in range(t, advantage_len - 1):
+                delta = reward[k] + self.gamma * values[k + 1] * (1 - int(dones[k])) - values[k]
+                adv = adv + discount * delta
+                discount = discount * self.gamma * self.gae_lambda
+            advantage[t] = adv
         advantage = torch.tensor(advantage)
         return advantage
 
-    def compute_gae(next_value, rewards, masks, values, gamma=0.99, tau=0.95):
-        values = values + [next_value]
-        gae = 0
-        returns = []
-        for step in reversed(range(len(rewards))):
-            delta = rewards[step] + gamma * values[step + 1] * masks[step] - values[step]
-            gae = delta + gamma * tau * masks[step] * gae #delta + G * 0.95(1-DONE)*0.
-            returns.insert(0, gae + values[step])
-        return returns
+    def mini_batch_loss(self, batch_state, batch_prob, batch_action, batch_critic, batch_advantage):
+        dist = self.actor(batch_state)
+        critic_value = self.critic(batch_state).squeeze()
+        new_probs = dist.log_prob(batch_action)
+        prob_ratio = new_probs.exp() / batch_prob.exp()
+        weighted_probs = batch_advantage * prob_ratio
+        weighted_clip = torch.clamp(prob_ratio, 1 - self.policy_clip, 1 + self.policy_clip) * batch_advantage
+        actor_loss = -torch.min(weighted_probs, weighted_clip).mean()
+        returns = batch_advantage + batch_critic
+        critic_loss = (returns - critic_value) ** 2
+        critic_loss = critic_loss.mean()
+        total_loss = actor_loss + 0.5 * critic_loss
+        return total_loss
 
     def learn(self):
-        for _ in range(self.epoch):
-            ### compute advantage ###
-            #state, action, reward, done, prob, critic = self.memory.data()
-            advantage = self.compute_advantage(reward, critic, done)  # a = a + d*(r + (1-D)*G*V[K+1] - V[K])
-            batch = self.memory.sample()
-            print(batch)
+        # for _ in range(5):原來的數據重複利用
+        batches = self.memory.sample()
+        state, action, prob, critic, reward, done = self.memory.data()
+        ### compute advantage ###
+        advantage = self.compute_advantage(reward, critic, done)
+        ### SGD ###
+        for batch in batches:
+            batch_state = state[batch]
+            batch_prob = prob[batch]
+            batch_action = action[batch]
+            batch_advantage = advantage[batch]
+            batch_critic = critic[batch]
 
-            ### SGD ###
-            values = torch.tensor(value)
-            # train_batch()
-            for batch in batch:  # [[ 0,  6,  7,  3, 14],[ 5, 16,  8, 13, 11],...]
-                states = torch.tensor(state[batch], dtype=torch.float)
-                old_probs = torch.tensor(prob[batch])
-                actions = torch.tensor(action[batch])
-
-                dist = self.actor(states)
-                critic_value = self.critic(states).squeeze()
-                action_prob = dist.log_prob(actions)  # action_prob
-
-                prob_ratio = action_prob.exp() / old_probs.exp()
-
-                weighted_probs = advantage[batch] * prob_ratio  # [a + d*(r + (1-D)*G*V[K+1] - V[K]) ] * P1/p2
-                clip_prob = torch.clamp(prob_ratio, 1 - self.policy_clip, 1 + self.policy_clip) * advantage[batch]
-                actor_loss = -torch.min(weighted_probs, clip_prob).mean()
-
-                # critic_loss = F.smooth_l1_loss(advantage[batch], value.squeeze())
-                critic_loss = ((advantage[batch] + values[batch] - critic_value) ** 2).mean()
-
-                total_loss = actor_loss + 0.5 * critic_loss
-
-                self.actor_optimizer.zero_grad()
-                self.critic_optimizer.zero_grad()
-                total_loss.backward()
-                self.actor_optimizer.step()
-                self.critic_optimizer.step()
-        self.memory.clear()
+            total_loss = self.mini_batch_loss(batch_state, batch_prob, batch_action, batch_critic, batch_advantage)
+            self.actor_optimizer.zero_grad()
+            self.critic_optimizer.zero_grad()
+            total_loss.backward()
+            self.actor_optimizer.step()
+            self.critic_optimizer.step()
 
 
 if __name__ == '__main__':
@@ -185,7 +171,7 @@ if __name__ == '__main__':
             step = step + 1
             action, prob, critic = agent.choose_action(state)
             next_state, reward, done, _ = env.step(action)
-            agent.memory.add((state, action, reward, done, prob, critic))
+            agent.memory.add(state, action, prob, critic, reward, done)
 
             if step % agent.memory.memory_size == 0: agent.learn()
 
