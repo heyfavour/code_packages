@@ -206,11 +206,11 @@ if __name__ == '__main__':
         ou_noise.reset()
         step = 0
         while True:
-            if epoch>=1000:env.render()
+            env.render()
             step = step + 1
             action = agent.choose_action(state)
             # action = np.clip(np.random.normal(action,NOISE),-1.0,1.0) #guassion noise
-            if epoch < 1000:action = ou_noise.get_action(action, step)  # 即paper中的random process
+            action = ou_noise.get_action(action, step)  # 即paper中的random process
             next_state, reward, done, _ = env.step(action)
             agent.store_transition(state, action, reward, next_state, done)
             agent.learn()
