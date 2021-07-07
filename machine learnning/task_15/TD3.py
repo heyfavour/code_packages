@@ -6,9 +6,9 @@ import numpy as np
 import gym
 
 # Hyper Parameters
-BATCH_SIZE = 256
+BATCH_SIZE = 64
 GAMMA = 0.9  # reward discount
-MEMORY_CAPACITY = 5000
+MEMORY_CAPACITY = 2000
 
 env = gym.make('Pendulum-v0')
 env.unwrapped
@@ -119,30 +119,30 @@ class OUNoise(object):  # Ornstein–Uhlenbeck
         self.obs = self.obs + self.theta * (self.mu - self.obs) + self.sigma * np.random.randn(self.action_dim)
         return self.obs
 
-    def get_action(self, action, t=0):
+    def get_action(self, action):
         ou_obs = self.evolve_obs()
-        # sigmae = max-(max-min)*min(1,t/10000)
-        self.sigma = self.max_sigma - (self.max_sigma - self.min_sigma) * min(1.0, t / self.decay_period)  # 动态 sigma
+        # sigma = max-(max-min)*min(1,t/10000)
+        # self.sigma = self.max_sigma - (self.max_sigma - self.min_sigma) * min(1.0, t / self.decay_period)  # 动态 sigma
         return np.clip(action + ou_obs, self.low, self.high)
 
 
 class TD3(object):
     def __init__(self):
-        self.gamma = 0.99
+        self.gamma = 0.9
         self.soft_tau = 0.01  # 控制更新得幅度
         self.policy_noise = 0.2
         self.noise_clip = 0.5
-        self.actor_freq = 64 * 4
-        self.expl_noise = 0.01  # action noise
-        self.start_step = 1000
+        self.policy_delay = 5  # policy更新频率
+        self.exploration_noise = 0.1
         self.max_action = 2.0
         self.min_action = -2.0
 
         self.actor, self.target_actor = Actor(), Actor()
         self.critic, self.target_critic = Critic(), Critic()
+
+        self.actor_optimizer = torch.optim.AdamW(self.actor.parameters(), lr=0.0003)
+        self.critic_optimizer = torch.optim.AdamW(self.critic.parameters(), lr=0.0003)
         self.update_target_model()
-        self.actor_optimizer = torch.optim.AdamW(self.actor.parameters(), lr=0.001)
-        self.critic_optimizer = torch.optim.AdamW(self.critic.parameters(), lr=0.001)
 
         self.memory = Memory(MEMORY_CAPACITY)
         self.loss_func = nn.MSELoss()
@@ -159,6 +159,12 @@ class TD3(object):
             target_param.data.copy_(target_param.data * (1.0 - self.soft_tau) + param.data * self.soft_tau)
 
     def choose_action(self, state):
+        action = self.predict_action(state)
+        action = action + np.random.normal(0, self.exploration_noise, size=N_ACTIONS)
+        action = action.clip(self.min_action, self.max_action)
+        return action
+
+    def predict_action(self, state):
         state = torch.FloatTensor(state).unsqueeze(0)
         with torch.no_grad():
             action = self.actor(state).detach().numpy()[0] * 2.0
@@ -169,14 +175,15 @@ class TD3(object):
 
     def critic_learn(self, state, action, reward, next_state, done):
         with torch.no_grad():
-            # Select action according to policy and add clipped noise
             # randn_like 返回一个和输入大小相同的张量，其由均值为0、方差为1的标准正态分布填充
-            noise = (torch.randn_like(action) * self.policy_noise).clamp(-self.noise_clip, self.noise_clip)
+            # noise = (torch.randn_like(action) * self.policy_noise).clamp(-self.noise_clip, self.noise_clip)
+            noise = torch.ones_like(action).data.normal_(0, self.policy_noise).clamp(-self.noise_clip, self.noise_clip)
+
             next_action = (self.target_actor(next_state) + noise).clamp(self.min_action, self.max_action)
             # Compute the target Q value
             target_Q1, target_Q2 = self.target_critic(next_state, next_action)
             target_Q = torch.min(target_Q1, target_Q2)
-            target_Q = reward + done * self.gamma * target_Q
+            target_Q = reward + (1 - done) * self.gamma * target_Q
         # Get current Q estimates
         current_Q1, current_Q2 = self.critic(state, action)
         # Compute critic loss
@@ -199,7 +206,7 @@ class TD3(object):
         state, action, reward, next_state, done = self.memory.sample(BATCH_SIZE)
         self.critic_learn(state, action, reward, next_state, done)
         # Delayed policy updates
-        if self.memory.memory_counter % self.actor_freq == 0:
+        if self.memory.memory_counter % self.policy_delay == 0:
             self.actor_learn(state)
             self.soft_update_model()
 
@@ -211,17 +218,13 @@ if __name__ == '__main__':
         state = env.reset()
         epoch_rewards = 0
         ou_noise.reset()
-        step = 0
         while True:
-            step = step + 1
             action = agent.choose_action(state)
-            # action = np.clip(np.random.normal(action,NOISE),-2.0,2.0) #guassion noise
-            action = ou_noise.get_action(action, step)  # 即paper中的random process
             next_state, reward, done, _ = env.step(action)
             agent.store_transition(state, action, reward, next_state, done)
             agent.learn()
             state = next_state
             epoch_rewards = epoch_rewards + reward
             if done:
-                print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}|step_all:{agent.memory.memory_counter}')
+                print(f'Epoch: {epoch:0=3d} | epoch_rewards:  {round(epoch_rewards, 2)}')
                 break
