@@ -2,6 +2,7 @@ from ray import tune
 
 
 def calc_param(step, alpha, beta):
+    # if step<5:step = step*10
     return 0.1 + alpha  + beta * 0.1 +step
     # return (0.1 + alpha * step / 100) ** (-1) + beta * 0.1
 
@@ -13,7 +14,7 @@ def training_function(config):
         # Iterative training function - can be any arbitrary training procedure.
         intermediate_score = calc_param(step, alpha, beta)
         # Feed the score back back to Tune.
-        tune.report(mean_loss=intermediate_score)
+        tune.report(mean_loss=intermediate_score)#以最后汇报的数据为准
 
 
 config = {
