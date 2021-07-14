@@ -107,10 +107,10 @@ class SAC:
         self.actor = Actor()
         self.update_target_model()
         # optimizer
-        self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=3E-4)
-        self.soft_1_optimizer = torch.optim.Adam(self.soft_1.parameters(), lr=3E-4)
-        self.soft_2_optimizer = torch.optim.Adam(self.soft_2.parameters(), lr=3E-4)
-        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=3E-4)
+        self.critic_optimizer = torch.optim.Adam(self.critic.parameters(), lr=0.001)
+        self.soft_1_optimizer = torch.optim.Adam(self.soft_1.parameters(), lr=0.001)
+        self.soft_2_optimizer = torch.optim.Adam(self.soft_2.parameters(), lr=0.001)
+        self.actor_optimizer = torch.optim.Adam(self.actor.parameters(), lr=0.01)
         self.loss_func = nn.MSELoss()
 
         self.soft_tau = 0.01  # 控制更新得幅度
