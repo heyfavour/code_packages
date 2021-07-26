@@ -1,6 +1,5 @@
-import gym, os
+import gym
 import numpy as np
-import matplotlib.pyplot as plt
 from itertools import count
 from collections import namedtuple
 

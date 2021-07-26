@@ -129,9 +129,9 @@ class OUNoise(object):  # Ornstein–Uhlenbeck
 class TD3(object):
     def __init__(self):
         self.gamma = 0.9
-        self.soft_tau = 0.01  # 控制更新得幅度
+        self.soft_tau = 0.02  # 控制更新得幅度
         self.policy_noise = 0.2
-        self.noise_clip = 0.5
+        self.noise_clip = 0.2
         self.policy_delay = 5  # policy更新频率
         self.exploration_noise = 0.1
         self.max_action = 2.0

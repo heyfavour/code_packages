@@ -206,7 +206,7 @@ if __name__ == '__main__':
         ou_noise.reset()
         step = 0
         while True:
-            env.render()
+            # env.render()
             step = step + 1
             action = agent.choose_action(state)
             # action = np.clip(np.random.normal(action,NOISE),-1.0,1.0) #guassion noise

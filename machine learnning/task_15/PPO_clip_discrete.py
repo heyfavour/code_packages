@@ -18,6 +18,10 @@ env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
 N_ACTIONS = env.action_space.n  # 2 2个动作
 N_STATES = env.observation_space.shape[0]  # 4 state的维度
 
+def init_weights(m):
+    if isinstance(m, nn.Linear):
+        nn.init.normal_(m.weight, mean=0., std=0.1)
+        nn.init.constant_(m.bias, 0.1)
 
 class Actor(nn.Module):
     def __init__(self, ):
@@ -30,6 +34,7 @@ class Actor(nn.Module):
             nn.Linear(50, N_ACTIONS),
             nn.Softmax(dim=-1)
         )
+        self.apply(init_weights)
 
     def forward(self, state):
         dist = self.actor(state)
@@ -47,6 +52,7 @@ class Critic(nn.Module):
             nn.ReLU(),
             nn.Linear(50, 1)
         )
+        self.apply(init_weights)
 
     def forward(self, state):
         value = self.critic(state)
@@ -114,11 +120,11 @@ class PPO():
     def compute_advantage(self, reward, values, dones):
         advantage_len = self.memory.memory_size
         advantage = np.zeros(advantage_len, dtype=np.float32)
-        for t in range(advantage_len - 1):
+        for t in range(advantage_len - 1):#0-39
             discount = 1
             adv = 0
             for k in range(t, advantage_len - 1):
-                delta = reward[k] + self.gamma * values[k + 1] * (1 - int(dones[k])) - values[k]
+                delta = reward[k] + self.gamma * values[k + 1] * (1 - int(dones[k])) - values[k] #r_0+0.99*v_1*
                 adv = adv + discount * delta
                 discount = discount * self.gamma * self.gae_lambda
             advantage[t] = adv
