@@ -11,32 +11,50 @@ env_name = 'CartPole-v0'
 env = gym.make(env_name)
 N_ACTIONS = env.action_space.n
 N_STATES = env.observation_space.shape[0]
-MEMORY_CAPACITY = BATCH_SIZE = 3
+MEMORY_CAPACITY = BATCH_SIZE = 40
 
 
 class Memory(object):
     def __init__(self, memory_size=MEMORY_CAPACITY):
-        self.memory = np.zeros(memory_size, dtype=object)
+        # 这样写是为了需要数据保存梯度
+        self.state = np.zeros(memory_size, dtype=object)
+        self.action = np.zeros(memory_size, dtype=object)
+        self.reward = np.zeros(memory_size, dtype=object)
+        self.next_state = np.zeros(memory_size, dtype=object)
+        self.done = np.zeros(memory_size, dtype=object)
+        self.dist = np.zeros(memory_size, dtype=object)
+        self.value = np.zeros(memory_size, dtype=object)
+        self.probs = np.zeros(memory_size, dtype=object)
         self.memory_size = memory_size
         self.memory_counter = 0
 
-    def add(self, transition):  # data = (state, action, reward, next_state, done) 4 1 1 4 1
+    def add(self, state, action, reward, next_state, done, dist, value, probs):
         index = self.memory_counter % self.memory_size
-        self.memory[index] = transition
+        self.state[index] = state
+        self.action[index] = action
+        self.reward[index] = reward
+        self.next_state[index] = next_state
+        self.done[index] = done
+        self.dist[index] = dist
+        self.value[index] = value
+        self.probs[index] = probs
         self.memory_counter = self.memory_counter + 1
 
-    def sample(self, batch_size=BATCH_SIZE):
-        # state, action, reward, next_state, done,dist,value,probs
-        sample = np.array(list(self.memory[:]), dtype=object).transpose()
-        state = torch.FloatTensor(np.vstack(sample[0]))
-        action = torch.FloatTensor(np.vstack(sample[1]))
-        reward = torch.FloatTensor(list(sample[2])).view(-1)
-        next_state = torch.FloatTensor(np.vstack(sample[3]))
-        done = torch.FloatTensor(sample[4].astype(int)).view(-1)
-        dist = sample[5]
-        value = torch.FloatTensor(sample[6].astype(float)).view(-1)
-        probs = sample[7]
+    def sample(self):
+        #state, action, reward, next_state, done, dist, value, probs
+        state = torch.Tensor(list(self.state))
+        action = torch.Tensor(list(self.action))
+        reward = torch.Tensor(list(self.reward))
+        next_state = torch.Tensor(list(self.next_state))
+        done = torch.Tensor(list(self.done))
+        dist = np.array(self.dist)
+        value = torch.Tensor(list(self.value))
+        probs = torch.cat(list(self.probs))
+        # print(state.size(), action.size(), reward.size(), next_state.size(), done.size(), value.size())
+        # print(dist)
+        # print(probs)
         return state, action, reward, next_state, done, dist, value, probs
+
 
     def __len__(self):
         return self.memory_size if self.memory_counter > self.memory_size else self.memory_counter
@@ -50,7 +68,7 @@ class ActorCritic(nn.Module):
             nn.Linear(N_STATES, 256),
             nn.ReLU(),
             nn.Linear(256, N_ACTIONS),
-            nn.Softmax(dim=1),
+            nn.Softmax(dim=-1),
         )
 
         self.critic = nn.Sequential(
@@ -72,45 +90,50 @@ class A2C:
         self.ac = ActorCritic()
         self.ac_optimizer = torch.optim.Adam(self.ac.parameters(), lr=0.01)
         self.memory = Memory(MEMORY_CAPACITY)
+        self.gamma = 0.9
 
     def choose_action(self, state):
         state = torch.FloatTensor(state).unsqueeze(0)
-        with torch.no_grad():
-            dist, value = self.ac(state)
-            action = dist.sample()
-            probs = dist.log_prob(action)
-        return dist, action.numpy()[0], probs, value.numpy()[0][0]
+        dist, value = self.ac(state)
+        action = dist.sample()
+        probs = dist.log_prob(action)
+        return dist, action.item(), probs, value[0][0]
 
     def store_transition(self, state, action, reward, next_state, done, dist, value, probs):
-        self.memory.add((state, action, reward, next_state, done, dist, value, probs))
+        ##state, action, reward, next_state, done, dist, value, probs
+        self.memory.add(state, action, reward, next_state, done, dist, value, probs)
 
-    def compute_advantage(self,next_state, reward, done):
-        _, _, _, next_value = self.choose_action(next_state[-1])
+    def compute_advantage(self, next_state, reward, done):#y*r-v 这里是计算y*r
+        next_state = next_state[-1]
+        _, _, _, next_value = self.choose_action(next_state)
         R = next_value
-        print(reward,done,R,"---------------")
-        print()
         returns = []
         for step in reversed(range(BATCH_SIZE)):
-            delta = reward[step] + reward * R * (1-done)[step]
-            returns.insert(0, delta)
-        print("==========================")
+            R = reward[step] + self.gamma * R * (1 - done)[step]#delta = r+0.9*sum(r+0.9*value)*(1-done)
+            returns.insert(0, R)
+        returns = torch.tensor(returns)
         return returns
 
-
     def learn(self):
-        state, action, reward, next_state, done, dist, value, probs = self.memory.sample(BATCH_SIZE)
+        state, action, reward, next_state, done, dist, value, probs = self.memory.sample()
         returns = self.compute_advantage(next_state, reward, done)
-        print(returns[0])
-        print(returns)
-        time.sleep(20)
+        advantage = returns - value
+        actor_loss = -(probs * advantage).mean()
+        critic_loss = advantage.pow(2).mean()
+
+        loss = actor_loss + 0.5 * critic_loss
+
+        self.ac_optimizer.zero_grad()
+        loss.backward()
+        self.ac_optimizer.step()
 
 
 if __name__ == "__main__":
     agent = A2C()
-    step = 0
     for epoch in range(2000):
         state = env.reset()
         epoch_rewards = 0
+        step = 0
         while True:
             # env.render()
             step = step + 1
