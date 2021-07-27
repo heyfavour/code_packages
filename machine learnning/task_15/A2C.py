@@ -41,7 +41,7 @@ class Memory(object):
         self.memory_counter = self.memory_counter + 1
 
     def sample(self):
-        #state, action, reward, next_state, done, dist, value, probs
+        # state, action, reward, next_state, done, dist, value, probs
         state = torch.Tensor(list(self.state))
         action = torch.Tensor(list(self.action))
         reward = torch.Tensor(list(self.reward))
@@ -54,7 +54,6 @@ class Memory(object):
         # print(dist)
         # print(probs)
         return state, action, reward, next_state, done, dist, value, probs
-
 
     def __len__(self):
         return self.memory_size if self.memory_counter > self.memory_size else self.memory_counter
@@ -103,14 +102,15 @@ class A2C:
         ##state, action, reward, next_state, done, dist, value, probs
         self.memory.add(state, action, reward, next_state, done, dist, value, probs)
 
-    def compute_advantage(self, next_state, reward, done):#y*r-v 这里是计算y*r
+    def compute_advantage(self, next_state, reward, done):  # y*r-v 这里是计算y*r
         next_state = next_state[-1]
         _, _, _, next_value = self.choose_action(next_state)
         R = next_value
         returns = []
         for step in reversed(range(BATCH_SIZE)):
-            R = reward[step] + self.gamma * R * (1 - done)[step]#delta = r+0.9*sum(r+0.9*value)*(1-done)
+            R = reward[step] + self.gamma * R * (1 - done)[step]
             returns.insert(0, R)
+        # r1 ,  r1*0.9 + r2 ,  (r1*09+r2)*0.9+r3
         returns = torch.tensor(returns)
         return returns
 
@@ -122,7 +122,7 @@ class A2C:
         critic_loss = advantage.pow(2).mean()
 
         entropy = sum([d.entropy().mean() for d in dist])
-        loss = actor_loss + 0.5 * critic_loss -0.001*entropy
+        loss = actor_loss + 0.5 * critic_loss - 0.001 * entropy
 
         self.ac_optimizer.zero_grad()
         loss.backward()
