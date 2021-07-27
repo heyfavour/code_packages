@@ -1,10 +1,10 @@
 """
-相当稳定的一种算法
-收敛比DQN稳定 400step分数突变过万（哭泣，DQN可以快速收敛到2000-3000但是相当不稳定,以后再也不用DQN了）
-吐槽一句理解了好久，没有DQN好理解
+可以适当调整学习率，会学习的效果比DQN好
 """
 # !/usr/bin/env python
 # coding=utf-8
+import time
+
 import gym
 import numpy as np
 import torch
@@ -27,14 +27,14 @@ class Actor(nn.Module):
     def __init__(self, ):
         super().__init__()
         self.actor = nn.Sequential(
-            nn.Linear(N_STATES, 50),
+            nn.Linear(N_STATES, 64),
             nn.ReLU(),
-            nn.Linear(50, 50),
+            nn.Linear(64, 64),
             nn.ReLU(),
-            nn.Linear(50, N_ACTIONS),
+            nn.Linear(64, N_ACTIONS),
             nn.Softmax(dim=-1)
         )
-        self.apply(init_weights)
+        #self.apply(init_weights)
 
     def forward(self, state):
         dist = self.actor(state)
@@ -46,13 +46,13 @@ class Critic(nn.Module):
     def __init__(self, ):
         super(Critic, self).__init__()
         self.critic = nn.Sequential(
-            nn.Linear(N_STATES, 50),
+            nn.Linear(N_STATES, 64),
             nn.ReLU(),
-            nn.Linear(50, 50),
+            nn.Linear(64, 64),
             nn.ReLU(),
-            nn.Linear(50, 1)
+            nn.Linear(64, 1)
         )
-        self.apply(init_weights)
+        #self.apply(init_weights)
 
     def forward(self, state):
         value = self.critic(state)
@@ -94,16 +94,16 @@ class PPOMemory:
 
 class PPO():
     def __init__(self):
-        self.policy_clip = 0.2
+        self.policy_clip = 0.1
         self.gamma = 0.9
         self.gae_lambda = 0.95
         self.actor = Actor()
-        self.actor_optimizer = optim.AdamW(self.actor.parameters(), lr=0.0005)
+        self.actor_optimizer = optim.AdamW(self.actor.parameters(), lr=0.002)
 
         self.critic = Critic()
-        self.critic_optimizer = optim.AdamW(self.critic.parameters(), lr=0.0005)
+        self.critic_optimizer = optim.AdamW(self.critic.parameters(), lr=0.001)
 
-        self.batch_size = 20
+        self.batch_size = 40
         self.batch_num = 4
         self.memory = PPOMemory(self.batch_size, self.batch_num)
 
@@ -131,9 +131,26 @@ class PPO():
         advantage = torch.tensor(advantage)
         return advantage
 
+    def compute_gae(self, next_state, reward, done, critic):  # y*r-v 这里是计算y*r
+        _, _,  next_value = self.choose_action(next_state)
+        value = torch.cat((critic, torch.FloatTensor([next_value,]).view(-1)))
+        advantage_len = self.memory.memory_size
+        gae = 0
+        returns = []
+        for step in reversed(range(advantage_len)):
+            delta = reward[step] + self.gamma * value[step + 1] * (1 - done[step]) - value[step]
+            gae = delta + self.gamma * self.gae_lambda * (1 - done[step]) * gae
+            returns.insert(0, gae + value[step])
+        #r1+0.9*v_next - v + v , (r1+0.9*v_next - v) * 0.95*0.9 + (r2+0.9*v_next - v) ,...
+        returns = torch.tensor(returns)
+        advantage = returns - critic
+        return advantage.detach()
+
     def mini_batch_loss(self, batch_state, batch_prob, batch_action, batch_critic, batch_advantage):
         dist = self.actor(batch_state)
+        entropy = dist.entropy().mean()
         critic_value = self.critic(batch_state).squeeze()
+
         new_probs = dist.log_prob(batch_action)
         prob_ratio = new_probs.exp() / batch_prob.exp()
         weighted_probs = batch_advantage * prob_ratio
@@ -142,7 +159,13 @@ class PPO():
         returns = batch_advantage + batch_critic
         critic_loss = (returns - critic_value) ** 2
         critic_loss = critic_loss.mean()
-        total_loss = actor_loss + 0.5 * critic_loss
+        total_loss = actor_loss + 0.5 * critic_loss - 0.01 * entropy
+
+        self.actor_optimizer.zero_grad()
+        self.critic_optimizer.zero_grad()
+        total_loss.backward()
+        self.actor_optimizer.step()
+        self.critic_optimizer.step()
         return total_loss
 
     def learn(self):
@@ -150,7 +173,9 @@ class PPO():
         batches = self.memory.sample()
         state, action, prob, critic, reward, done = self.memory.data()
         ### compute advantage ###
-        advantage = self.compute_advantage(reward, critic, done)
+        advantage = self.compute_gae(next_state,reward, done,critic)
+        # advantage = self.compute_advantage(reward, critic, done)
+
         ### SGD ###
         for batch in batches:
             batch_state = state[batch]
@@ -158,13 +183,8 @@ class PPO():
             batch_action = action[batch]
             batch_advantage = advantage[batch]
             batch_critic = critic[batch]
+            self.mini_batch_loss(batch_state, batch_prob, batch_action, batch_critic, batch_advantage)
 
-            total_loss = self.mini_batch_loss(batch_state, batch_prob, batch_action, batch_critic, batch_advantage)
-            self.actor_optimizer.zero_grad()
-            self.critic_optimizer.zero_grad()
-            total_loss.backward()
-            self.actor_optimizer.step()
-            self.critic_optimizer.step()
 
 
 if __name__ == '__main__':
