@@ -121,7 +121,8 @@ class A2C:
         actor_loss = -(probs * advantage).mean()
         critic_loss = advantage.pow(2).mean()
 
-        loss = actor_loss + 0.5 * critic_loss
+        entropy = sum([d.entropy().mean() for d in dist])
+        loss = actor_loss + 0.5 * critic_loss -0.001*entropy
 
         self.ac_optimizer.zero_grad()
         loss.backward()
