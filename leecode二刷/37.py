@@ -17,7 +17,7 @@ class Solution:
                 i = i + 1
                 j = 0
             if i==9:return i,j
-            if board[i][j] == ".":return get_coordinate(i,j,board)
+            if board[i][j] != ".":return get_coordinate(i,j,board)
             return i,j
         def get_able_nums(i,j,board):
             row_nums = [board[i][col] for col in range(9) if board[i][col] != "."]
