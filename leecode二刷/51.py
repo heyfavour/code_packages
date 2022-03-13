@@ -1,6 +1,3 @@
-import copy
-
-
 class Solution:
     def solveNQueens(self, n: int) -> list[list[str]]:
         ans = []
