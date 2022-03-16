@@ -1,30 +1,33 @@
 class Solution:
     def searchRange(self, nums: list[int], target: int) -> list[int]:
+        if not nums or nums[0] > target or nums[-1] < target: return [-1, -1]
         n = len(nums)
-        L,R = 0,n-1
-        #左边界
-        while L<=R:
-            mid = (L+R)>>1
+        l, r = 0, n - 1
+        while l <= r:
+            mid = (l + r) >> 1
             if nums[mid] == target:
-                R = mid -1
+                r = mid - 1
             elif nums[mid] > target:
-                L = mid+1
-            else:
-                R = mid-1
-        left = L
-        #右边界
-        while L<=R:
-            mid = (L+R)>>1
+                r = mid - 1
+            elif nums[mid] < target:
+                l = mid + 1
+        if nums[l] != target: return [-1, -1]
+        L = l
+        l, r = 0, n - 1
+        while l <= r:
+            mid = (l + r) >> 1
             if nums[mid] == target:
-                L = mid
-            elif nums[mid]<target:
-                L = mid
-            elif nums[mid]>target:
-                R = mid + 1
-        right = R
-        return [left,right]
+                l = mid + 1
+            elif nums[mid] < target:
+                l = mid + 1
+            elif nums[mid] > target:
+                r = mid - 1
+        R = r
+        return [L, R]
+
 
 if __name__ == '__main__':
     nums = [5, 7, 7, 8, 8, 10]
     target = 8
-    print(Solution.searchRange(nums, target))
+    solution = Solution()
+    print(solution.searchRange(nums, target))
