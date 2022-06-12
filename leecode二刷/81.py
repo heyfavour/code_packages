@@ -14,7 +14,7 @@ class Solution:
                 else:
                     L = mid + 1
             else:  # 右边有序
-                if nums[mid] < target <= nums[R]:
+                if nums[mid] <= target <= nums[R]:
                     L = mid + 1
                 else:
                     R = mid - 1

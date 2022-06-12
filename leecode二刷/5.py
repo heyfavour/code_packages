@@ -22,6 +22,19 @@ class Solution:
                     begin = i
         return s[begin:begin + max_len]
 
+    def longestPalindrome(self, s: str) -> str:
+        n = len(s)
+        dp = [[True]*n for i in range(n)]
+        max_len,begin = 1,0
+        for i in range(n-1,-1,-1):#起始位置
+            for j in range(i+1,n):#终点
+                dp[i][j] = (s[i]==s[j]) and dp[i+1][j-1]
+                L = j-i+1
+                if dp[i][j] and L>max_len:
+                    max_len=L
+                    begin = i
+        return s[begin:begin+max_len]
+
 
 if __name__ == '__main__':
     solution = Solution()
