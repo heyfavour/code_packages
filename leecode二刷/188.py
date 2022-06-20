@@ -1,17 +1,21 @@
 class Solution:
     def maxProfit(self, k: int, prices: list[int]) -> int:
-        n = k // 2
-        buy = [float("inf")]*n
-        profit = [float("-inf")]*n
-        for i in range(len(k)):
-            buy[0] = min(buy[0],prices[i])#支出
-            profit[0] = max(profit[0],profit[0]-buy[0])#收入
-            for i in range(1,n+1):
-                buy[i] = min(buy[i],profit[i]-prices[i])
+        n = len(prices)
+        k = min(k,n//2)
+        if k ==0:return 0
+
+        profit_buy = [float("-inf")] * k
+        profit_sell = [0] * k
+        for i in range(n):
+            for j in range(k):
+                profit_buy[j] = max(profit_buy[j], (0 if j ==0 else profit_sell[j-1]) - prices[i])
+                profit_sell[j] = max(profit_sell[j], profit_buy[j] + prices[i])
+
+        return profit_sell[-1]
 
 
 if __name__ == '__main__':
     solution = Solution()
     k = 2
-    prices = [2, 4, 1]
+    prices = [3,2,6,5,0,3]
     print(solution.maxProfit(k, prices))
