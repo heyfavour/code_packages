@@ -19,26 +19,18 @@ class Solution:
         #     if i>0 and L[i][1] == L[i-1][1]:continue
         #     ans.append(L[i])
         # return ans
-        #优化1
-        L = [left for left, _, _ in buildings] + [right for _, right, _ in buildings]
-        L = sorted(list(set(L)))
-        L = [[i, [0]] for i in L]
-        stack = []
-        heapq.heapify(stack)
-        build_index = 0
-        for i in range(len(L)):
-            if buildings[build_index]<=
-        L = [[i[0], max(i[1])] for i in L]
-        ans = []
-        for i in range(len(L)):
-            if i>0 and L[i][1] == L[i-1][1]:continue
-            ans.append(L[i])
+        L = [(l,-h,r) for l, r, h in buildings] + [(r,0,0) for _, r, _ in buildings]#左端点 高的排前面 + 右端点
+        L.sort()
+        ans = []#(L,H) #插入 00 检测第一次变化
+        heapq_stack = [(0,float("inf"))]#(H,R)用于记录[L,R]有效高度 最大堆 随时取最高 初始化保证0一直在 这样遇到重复的r重点
+        for left,minusH,right in L:
+            H=-minusH
+            while left>=heapq_stack[0][1]:
+                heapq.heappop(heapq_stack)
+            if H:heapq.heappush(heapq_stack,(-H,right))
+            if not ans or ans[-1][1]!=-heapq_stack[0][0]:#第一次  最高发生变化了#(L,H) (-H R)
+                ans.append((left,-heapq_stack[0][0]))
         return ans
-
-
-    # now_building = []
-    # for x in range(L):
-    #     #获取l<=x<=r的max_H
 
 
 if __name__ == '__main__':
