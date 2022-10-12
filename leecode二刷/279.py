@@ -11,10 +11,16 @@ dp[i][j] = max(dp[i-1][j] #不放物品i dp[i-1][j-weight[i]]+value[i])#放物�
 
 """
 
-class Solution:
+class Solution():
     def numSquares(self, n: int) -> int:
-        pass
+        nums = [i**2 for i in range(n+1) if i**2<=n]
+        dp = [n]*(n+1)
+        dp[0]=0
+        for num in nums:
+            for j in range(1,n+1):
+                if j>=num:dp[j] = min(dp[j],dp[j-num]+1)
+        return dp[-1]
 
 if __name__ == '__main__':
     solution = Solution()
-    print(solution(13))
+    print(solution.numSquares(13))
