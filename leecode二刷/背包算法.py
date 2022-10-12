@@ -27,7 +27,6 @@ def pageckage_01():
                 res.append(i - 1)
                 j = j - w[i]
                 i = i - 1
-        print(res)
         return res
 
     get_path(dp, w, pw)
@@ -61,7 +60,6 @@ def pageckage_complete():
             else:
                 res.append(i - 1)
                 j = j - w[i]
-        print(res)
         return res
 
     get_path(dp, w, pw)
@@ -91,7 +89,38 @@ def package_multi():
     print(dp)
 
 
+def package_01_one_dim():
+    c = 10
+    w = [3, 4, 5, 7]
+    v = [1, 5, 6, 9]
+    w.insert(0, 0)
+    v.insert(0, 0)
+    dp = [0] * (c + 1)  # dp[背包]
+    for i in range(1, len(w)):
+        for j in range(c, 0, -1):
+            if w[i] <= j: dp[j] = max(dp[j], dp[j - w[i]] + v[i])
+    print(dp)
+    return dp[-1]
+
+
+def pageckage_complete_one_dim():
+    c = 10
+    w = [3, 4, 5, 7]
+    v = [1, 5, 6, 9]
+    w.insert(0, 0)
+    v.insert(0, 0)
+    dp = [0] * (c + 1)  # dp[背包]
+    for i in range(1, len(w)):
+        for j in range(0, c + 1):
+            if w[i] <= j: dp[j] = max(dp[j], dp[j - w[i]] + v[i])
+    print(dp)
+    return dp[-1]
+
+
 if __name__ == '__main__':
     pageckage_01()
     pageckage_complete()
     package_multi()
+    print("===========优化===============")
+    package_01_one_dim()
+    pageckage_complete_one_dim()
