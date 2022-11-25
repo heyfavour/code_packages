@@ -2,7 +2,7 @@ class Solution:
     def convert(self, s: str, numRows: int) -> str: #4
         if len(s) <= numRows:return s
         if numRows==1:return s
-        l = [[]*numRows for _ in range(numRows)]
+        l = [[] for _ in range(numRows)]
         for k,v in enumerate(s):
             row = (k+1) % (2*numRows-2)
             if 0<row <=numRows:
