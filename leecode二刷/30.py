@@ -22,7 +22,7 @@ class Solution:
                 ans.append(i)
         return ans
         """
-
+    """
     def findSubstring(self, s: str, words: list[str]) -> list[int]:
         words_counter = Counter(words)
         word_len = len(words[0])
@@ -32,6 +32,8 @@ class Solution:
             string = [s[j:j + word_len] for j in range(i, i + words_num * word_len, word_len)]
             if Counter(string) == words_counter: ans.append(i)
         return ans
+    """
+
 
 
 if __name__ == '__main__':

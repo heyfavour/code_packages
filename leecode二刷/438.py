@@ -1,40 +1,65 @@
-from collections import defaultdict
-
-
 class Solution:
     def findAnagrams(self, s: str, p: str) -> list[int]:
-        p_dict = defaultdict(int)
-        for char in p: p_dict[char] = p_dict[char] + 1
-        m, n = len(p), len(s)
-        l, ans, tp_dict = 0, [], defaultdict(int)
-        for r in range(n):
-            char = s[r]
-            if p_dict.get(char) == None:  # 字母不存在
-                tp_dict = defaultdict(int)
-                l = r + 1
-            else:  # 字母存在
-                tp_dict[char] = tp_dict[char] + 1
-                if tp_dict[char] > p_dict[char]:
-                    while True:
-                        tp_dict[s[l]] = tp_dict[s[l]] - 1
-                        l = l + 1
-                        if s[l - 1] == char: break
-                else:
-                    if (r - l + 1) < m:
-                        pass
-                    elif (r - l + 1) == m:
-                        ans.append(l)
-                        tp_dict[s[l]] = tp_dict[s[l]] - 1
-                        l = l + 1
-                    elif (r - l) > m:
-                        tp_dict[s[l]] = tp_dict[s[l]] - 1
-                        l = l + 1
+        """
+        s_len, p_len = len(s), len(p)
+
+        if s_len < p_len:
+            return []
+
+        ans = []
+        s_count = [0] * 26
+        p_count = [0] * 26
+        for i in range(p_len):
+            s_count[ord(s[i]) - 97] += 1
+            p_count[ord(p[i]) - 97] += 1
+
+        if s_count == p_count:
+            ans.append(0)
+
+        for i in range(s_len - p_len):
+            s_count[ord(s[i]) - 97] -= 1
+            s_count[ord(s[i + p_len]) - 97] += 1
+
+            if s_count == p_count:
+                ans.append(i + 1)
+
+        return ans
+        """
+        s_len, p_len = len(s), len(p)
+
+        if s_len < p_len:
+            return []
+
+        ans = []
+        count = [0] * 26
+        for i in range(p_len):
+            count[ord(s[i]) - 97] += 1
+            count[ord(p[i]) - 97] -= 1
+
+        differ = [c != 0 for c in count].count(True)
+
+        if differ == 0:
+            ans.append(0)
+
+        for i in range(s_len - p_len):
+            if count[ord(s[i]) - 97] == 1:  # 窗口中字母 s[i] 的数量与字符串 p 中的数量从不同变得相同
+                differ -= 1
+            elif count[ord(s[i]) - 97] == 0:  # 窗口中字母 s[i] 的数量与字符串 p 中的数量从相同变得不同
+                differ += 1
+            count[ord(s[i]) - 97] -= 1
+
+            if count[ord(s[i + p_len]) - 97] == -1:  # 窗口中字母 s[i+p_len] 的数量与字符串 p 中的数量从不同变得相同
+                differ -= 1
+            elif count[ord(s[i + p_len]) - 97] == 0:  # 窗口中字母 s[i+p_len] 的数量与字符串 p 中的数量从相同变得不同
+                differ += 1
+            count[ord(s[i + p_len]) - 97] += 1
+
+            if differ == 0:
+                ans.append(i + 1)
 
         return ans
 
 
 if __name__ == '__main__':
     solution = Solution()
-    s = "abacbabc"
-    p = "abc"
-    print(solution.findAnagrams(s, p))
+    print(solution.findAnagrams(s = "cbaebabacd", p = "abc"))
