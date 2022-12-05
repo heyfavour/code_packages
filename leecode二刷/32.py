@@ -29,13 +29,14 @@ class Solution:
     # 动态规划
     def longestValidParentheses(self, s: str) -> int:
         # - i-1-dp[i-1] - - - i-1 i
+
+        # i-dp[i-1]-1是与当前)对称的位置
         n = len(s)
         if n <= 1: return 0
         dp = [0] * n
         for i in range(n):
             if s[i] == ")" and i - dp[i - 1] - 1 >= 0 and s[i - dp[i - 1] - 1] == "(":
-                pre = dp[i - dp[i - 1] - 2] if i - dp[i - 1] - 2 > 0 else 0
-                dp[i] = pre + dp[i - 1] + 2
+                dp[i] = dp[i - dp[i - 1] - 2] + dp[i - 1] + 2
         return max(dp)
 
 

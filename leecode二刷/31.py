@@ -12,6 +12,8 @@ class Solution:
         1234
         8765
         """
+        #从n-2->-1 找到第一个 i<i+1 替换n-1->i 中第一个大于i的数据
+        #交换i/i+1  n-1
         n = len(nums)
         break_falg = False
         for i in range(n - 2, -1, -1):
