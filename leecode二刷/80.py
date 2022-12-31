@@ -1,12 +1,13 @@
+#26 删除有序数组中的重复项
+#80 删除有序数组中的重复项
 class Solution:
     def removeDuplicates(self, nums: list[int]) -> int:
-        i = 0
-        while i <= len(nums) - 3:
-            if nums[i] == nums[i + 2]:
-                nums.pop(i + 2)
-            else:
+        i = 2
+        for j in range(2,len(nums)):
+            if nums[j]!=nums[i-2]:
+                nums[i] = nums[j]
                 i = i + 1
-        return len(nums)
+        return i
 
 
 if __name__ == '__main__':

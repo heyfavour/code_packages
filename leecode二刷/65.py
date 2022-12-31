@@ -2,6 +2,8 @@ from enum import Enum
 
 """
 state = Enum("STATE",[state,state,state,state])
+type = Enum("TYPE",[type,type,type,type])
+
 transfer = {
     state[type:state,type:state,type:state],
     state[type:state,type:state,type:state],
@@ -13,7 +15,7 @@ for c in all:
     if type not in transfer[state]:
         return False
     state=transfer[state][type]
-    return st in [state.state state.state,state,state.state]
+return st in [state.state state.state,state,state.state]
     
 """
 class Solution:
