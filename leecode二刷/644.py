@@ -28,4 +28,4 @@ class Solution:
 
 if __name__ == '__main__':
     solution = Solution()
-    solution.findMaxAverage([1, 2, 3, 4, 5], 2)
+    solution.findMaxAverage([5], 1)
