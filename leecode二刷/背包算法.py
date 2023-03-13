@@ -102,6 +102,19 @@ def package_01_one_dim():
     print(dp)
     return dp[-1]
 
+def package_01_one_dim():
+    c = 10
+    w = [3, 4, 5, 7]
+    v = [1, 5, 6, 9]
+    w.insert(0, 0)
+    v.insert(0, 0)
+    dp = [0] * (c + 1)  # dp[背包]
+    for i in range(1, len(w)):
+        for j in range(c, w[i]-1, -1):
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i])
+    print(dp)
+    return dp[-1]
+
 
 def pageckage_complete_one_dim():
     c = 10
@@ -143,9 +156,11 @@ def pageckage_complete_ways():
 
 
 if __name__ == '__main__':
-    pageckage_01()
-    pageckage_complete()
-    package_multi()
+    #pageckage_01()
+    #pageckage_complete()
+    #package_multi()
     print("===========优化===============")
     package_01_one_dim()
-    pageckage_complete_one_dim()
+    package_01_one_dim2()
+    [0, 0, 0, 0, 1, 5, 6, 6, 9, 9, 11]
+    #pageckage_complete_one_dim()
