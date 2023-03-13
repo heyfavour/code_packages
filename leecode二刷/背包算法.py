@@ -117,6 +117,18 @@ def pageckage_complete_one_dim():
     return dp[-1]
 
 
+def pageckage_complete_ways():
+    c = 10
+    w = [i for i in range(n+1)]
+    dp = [0] * (c + 1)  # dp[背包]
+    dp[0]= 1
+    for i in range(1, len(w)):
+        for j in range(j, c + 1):
+            dp[j] = dp[j] + dp[j - w[i]]
+    print(dp)
+    return dp[-1]
+
+
 if __name__ == '__main__':
     pageckage_01()
     pageckage_complete()
