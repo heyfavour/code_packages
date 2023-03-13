@@ -116,6 +116,19 @@ def pageckage_complete_one_dim():
     print(dp)
     return dp[-1]
 
+def pageckage_complete_one_dim():
+    c = 10
+    w = [3, 4, 5, 7]
+    v = [1, 5, 6, 9]
+    w.insert(0, 0)
+    v.insert(0, 0)
+    dp = [0] * (c + 1)  # dp[背包]
+    for i in range(1, len(w)):
+        for j in range(w[i], c + 1):
+            dp[j] = max(dp[j], dp[j - w[i]] + v[i])
+    print(dp)
+    return dp[-1]
+
 
 def pageckage_complete_ways():
     c = 10
