@@ -1,3 +1,7 @@
+"""
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.0.0+${CUDA}.html
+"""
 import torch
 import os.path as osp
 import torch.nn.functional as F
@@ -50,12 +54,13 @@ if __name__ == '__main__':
     """
     model = GCN(1433, 16, 7)
     model, data = model.to(device), data.to(device)
-    optimizer = torch.optim.Adam([
+    optimizer = torch.optim.AdamW([
         dict(params=model.conv1.parameters(), weight_decay=5e-4),
-        dict(params=model.conv2.parameters(), weight_decay=0)
+        dict(params=model.conv2.parameters(), weight_decay=0),
+        dict(params=model.mlp.parameters()),
     ], lr=0.01)  # Only perform weight-decay on first convolution.
 
-    for epoch in range(1, 200 + 1):
+    for epoch in range(1, 500 + 1):
         loss = train()
         train_acc, val_acc, test_acc = test()
         log(Epoch=epoch, Loss=loss, Train=train_acc, Val=val_acc, Test=test_acc)

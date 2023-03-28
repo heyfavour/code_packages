@@ -1,6 +1,8 @@
 import torch
-from torch_geometric.nn import GCNConv
 import torch.nn.functional as F
+
+from torch import nn
+from torch_geometric.nn import GCNConv
 
 
 class GCN(torch.nn.Module):
@@ -16,19 +18,19 @@ class GCN(torch.nn.Module):
         normalize：默认为True，表示对邻接矩阵进行归一化。
         bias：默认添加偏置。
         """
-        self.net = torch.nn.Sequential(
-            GCNConv(in_channels, hidden_channels, cached=True, normalize=True),  # 1433 16
-            GCNConv(hidden_channels, out_channels, cached=True, normalize=True),  # 16 7
+        self.conv1 = GCNConv(in_channels, 256, cached=True, normalize=True)  # 1433 16
+        self.conv2 = GCNConv(256, 128, cached=True, normalize=True)  # 16 7
+        self.mlp = torch.nn.Sequential(
+            nn.LeakyReLU(),
+            nn.Dropout(0.5),
+            nn.Linear(128, 7),
         )
-        self.conv1 = GCNConv(in_channels, hidden_channels, cached=True, normalize=True)  # 1433 16
-        self.conv2 = GCNConv(hidden_channels, out_channels, cached=True, normalize=True)  # 16 7
-        self
 
     def forward(self, x, edge_index, edge_weight=None):
         # x [2708, 1433] edge [2, 10556]
         x = F.dropout(x, p=0.5, training=self.training)  # [2708, 1433]
         x = self.conv1(x, edge_index, edge_weight).relu()  # [2708, 16]
         x = F.dropout(x, p=0.5, training=self.training)  # [2708 16]
-        x =
         x = self.conv2(x, edge_index, edge_weight)  # [2708 7]
+        x = self.mlp(x)
         return x
