@@ -14,7 +14,7 @@ GAMMA = 0.9  # reward discount
 TARGET_REPLACE_ITER = 100  # target的更新频率
 MEMORY_CAPACITY = 5000  # memery较小时，训练较快，但是后期效果没记忆体大好，建议动态记忆体，前期记忆体小，后期记忆体大
 
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v1')
 env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
 N_ACTIONS = env.action_space.n  # 2 2个动作
 N_STATES = env.observation_space.shape[0]  # 4 state的维度
@@ -132,14 +132,14 @@ def modify_reward(state):
 if __name__ == '__main__':
     dqn = DQN_Agent()
 
-    for epoch in range(80000):
-        state = env.reset()  # 搜集当前环境状态。
+    for epoch in range(620):
+        state,_ = env.reset()  # 搜集当前环境状态。
         epoch_rewards = 0
         while True:
-            # env.render()
+            env.render()
             action = dqn.choose_action(state)
             # take action
-            next_state, reward, done, info = env.step(action)
+            next_state, reward, done,_, info = env.step(action)
             reward = modify_reward(next_state)
 
             epoch_rewards = epoch_rewards + reward
@@ -155,12 +155,12 @@ if __name__ == '__main__':
     # eval
     dqn.eval_net.eval()
     with torch.no_grad():
-        state = env.reset()  # 搜集当前环境状态。
+        state,_ = env.reset()  # 搜集当前环境状态。
         epoch_rewards = 0
         while True:
-            #env.render()
+            env.render()
             action = dqn.predict(state)
-            next_state, reward, done, info = env.step(action)
+            next_state, reward, done,_, info = env.step(action)
             # modify the reward 如果不重定义分数，相当难收敛
             # reward = modify_reward(next_state)
             epoch_rewards = epoch_rewards + reward
