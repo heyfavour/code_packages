@@ -28,7 +28,7 @@ class SarsaAgent():
         else:
             # Q <- Q + a*[(R + y*next_Q) - Q] next_Q:采取实际action 产生
             target_Q = reward + 0.99 * self.Q_TABLE[next_state, next_action]
-        self.Q_TABLE[state, action] = self.Q_TABLE[state, action] + 0.001 * (target_Q - predict_Q)
+        self.Q_TABLE[state, action] = self.Q_TABLE[state, action] + 0.01 * (target_Q - predict_Q)
 
 
 if __name__ == '__main__':
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     print("dim_action", dim_action)
     agent = SarsaAgent(dim_state, dim_action)
 
-    for epoch in range(5000):
+    for epoch in range(200):
         state, info = env.reset()  # 开始一局游戏
 
         total_rewards, total_steps = 0, 0
@@ -52,7 +52,7 @@ if __name__ == '__main__':
             next_state, reward, terminated, truncated, info = env.step(action)  # 采取该行为获取下一个state 及分数
             # print(next_state, reward, terminated, truncated, info)
             next_action = agent.choose_action(next_state)  # 行为 概率
-            if next_state == 47: reward = 10
+            if next_state == 47: reward = 100
             total_rewards = total_rewards + reward
             agent.learn(state, action, total_rewards, next_state, next_action, terminated or truncated)
             action = next_action
@@ -69,14 +69,11 @@ if __name__ == '__main__':
     while True:
 
         next_state, reward, terminated, truncated, info = env.step(action)  # 采取该行为获取下一个state 及分数
-        print(reward)
-        if state == 47: reward = 100
         next_action = agent.choose_action(next_state, False)  # 行为 概率
         action = next_action
         state = next_state
         if terminated: break
-        time.sleep(0.5)
+        time.sleep(0.1)
     print(f"Epoch:{epoch}|Total_steps:{total_steps}|Total_rewards:{total_rewards}")
     print(agent.Q_TABLE)
     print(agent.Q_TABLE[24])
-    time.sleep(1000)
