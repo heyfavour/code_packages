@@ -15,7 +15,6 @@ TARGET_REPLACE_ITER = 100  # target的更新频率
 MEMORY_CAPACITY = 5000  # memery较小时，训练较快，但是后期效果没记忆体大好，建议动态记忆体，前期记忆体小，后期记忆体大
 
 env = gym.make('CartPole-v1')
-env = env.unwrapped  # 还原env的原始设置，env外包了一层防作弊层
 N_ACTIONS = env.action_space.n  # 2 2个动作
 N_STATES = env.observation_space.shape[0]  # 4 state的维度
 # to confirm the shape
@@ -24,13 +23,6 @@ ENV_A_SHAPE = 0 if isinstance(env.action_space.sample(), int) else env.action_sp
 
 
 # 创建神经网络模型，输出的是可能的动作
-
-def weights_init(m):
-    classname = m.__class__.__name__
-    if classname == "Linear":
-        m.weight.data.normal_(0.0, 0.1)
-        m.bias.data.fill_(0)
-
 
 class Q_TABLE_NET(nn.Module):
     def __init__(self, ):
@@ -43,7 +35,6 @@ class Q_TABLE_NET(nn.Module):
             nn.Linear(50, N_ACTIONS),
             # nn.Softmax(dim=-1), 如果加了很难收敛
         )
-        # self.apply(weights_init)  # initialization
 
     def forward(self, input):
         output = self.model(input)
@@ -152,7 +143,7 @@ if __name__ == '__main__':
             if done:
                 break
             state = next_state
-    # eval
+    env = gym.make('CartPole-v1',render_mode="human")
     dqn.eval_net.eval()
     with torch.no_grad():
         state,_ = env.reset()  # 搜集当前环境状态。

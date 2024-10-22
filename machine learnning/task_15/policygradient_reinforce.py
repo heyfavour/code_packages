@@ -48,7 +48,7 @@ class Policy():
         return action.item(), log_prob
 
     def learn(self, log_probs, rewards):
-        loss = (-log_probs * rewards).sum()  # log_probs lnp*reward = torch [0.1]
+        loss = (-log_probs * rewards).sum()  # log_probs lnp*  = torch [0.1]
 
         self.optimizer.zero_grad()
         loss.backward()

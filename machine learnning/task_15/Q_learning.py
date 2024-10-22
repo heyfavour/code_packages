@@ -38,7 +38,6 @@ class QLearningAgent():
 
 if __name__ == '__main__':
     env = gym.make("CliffWalking-v0")
-    env = CliffWalkingWapper(env)
     dim_state = env.observation_space.n  # 48
     dim_action = env.action_space.n  # 4
     agent = QLearningAgent(dim_state, dim_action)
@@ -60,6 +59,7 @@ if __name__ == '__main__':
             if done:break
             print(f"Epoch:{epoch}|Total_steps:{total_steps}|Total_rewards:{total_rewards}")
     #EVAL
+    env = gym.make("CliffWalking-v0",render_mode="human")
     state = env.reset()  # 开始一局游戏
 
     action = agent.choose_action(state)
